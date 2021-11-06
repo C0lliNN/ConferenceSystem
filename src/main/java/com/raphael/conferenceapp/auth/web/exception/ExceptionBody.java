@@ -34,7 +34,7 @@ public class ExceptionBody {
     }
 
     public static ExceptionBody fromException(Throwable exception) {
-        return new ExceptionBody(exception.getMessage(), Collections.emptyList());
+        return fromMessage(exception.getMessage());
     }
 
     @Value

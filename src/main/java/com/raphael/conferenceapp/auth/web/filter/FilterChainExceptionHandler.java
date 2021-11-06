@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 public class FilterChainExceptionHandler extends OncePerRequestFilter {
     private final HandlerExceptionResolver resolver;
 
-    public FilterChainExceptionHandler(final @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
+    public FilterChainExceptionHandler(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
         this.resolver = resolver;
     }
 

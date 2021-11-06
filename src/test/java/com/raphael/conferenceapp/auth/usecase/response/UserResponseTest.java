@@ -1,7 +1,7 @@
 package com.raphael.conferenceapp.auth.usecase.response;
 
 import com.raphael.conferenceapp.auth.domain.User;
-import com.raphael.conferenceapp.mock.AuthMock;
+import com.raphael.conferenceapp.auth.mock.AuthMock;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

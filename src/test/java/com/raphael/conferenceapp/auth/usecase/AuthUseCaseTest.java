@@ -1,13 +1,12 @@
 package com.raphael.conferenceapp.auth.usecase;
 
 import com.raphael.conferenceapp.auth.domain.User;
-import com.raphael.conferenceapp.auth.exception.DuplicateEmailException;
 import com.raphael.conferenceapp.auth.exception.EmailNotFoundException;
 import com.raphael.conferenceapp.auth.exception.IncorrectPasswordException;
 import com.raphael.conferenceapp.auth.usecase.request.LoginRequest;
 import com.raphael.conferenceapp.auth.usecase.request.RegisterRequest;
 import com.raphael.conferenceapp.auth.usecase.response.UserResponse;
-import com.raphael.conferenceapp.mock.AuthMock;
+import com.raphael.conferenceapp.auth.mock.AuthMock;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.Optional;
 
@@ -116,46 +114,25 @@ class AuthUseCaseTest {
     class RegisterMethod {
 
         @Test
-        @DisplayName("when a DataIntegrityViolationException is raised, then it should return DuplicateEmailException")
-        void whenADataIntegrityViolationExceptionIsRaised_shouldReturnDuplicateEmailException() {
+        @DisplayName("when called, then it should register a new user")
+        void whenCalled_shouldRegisterANewUser() {
             RegisterRequest request = AuthMock.newRegisterRequest();
-            User user = request.toUser();
-            user.setPassword("some-hashed-password");
+            User user = request.toUser().withPassword("some-hashed-password");
 
             when(passwordEncoder.hashPassword(request.getPassword())).thenReturn("some-hashed-password");
-            when(repository.save(user)).thenThrow(DataIntegrityViolationException.class);
+            when(repository.save(user)).thenReturn(user);
+            when(tokenGenerator.generateTokenForUser(user)).thenReturn("new-token");
 
-            assertThatThrownBy(() -> useCase.register(request))
-                    .isInstanceOf(DuplicateEmailException.class)
-                    .hasMessage("This email is already being used.");
+            UserResponse expected = UserResponse.fromUser(user).withToken("new-token");
+            UserResponse actual = useCase.register(request);
+
+            assertThat(actual).isEqualTo(expected);
 
             verify(passwordEncoder).hashPassword(request.getPassword());
             verify(repository).save(user);
+            verify(tokenGenerator).generateTokenForUser(user);
 
-            verifyNoMoreInteractions(passwordEncoder, repository);
-            verifyNoInteractions(tokenGenerator);
-        }
-
-        @Test
-        @DisplayName("when the user is saved successfully, then it should return the response")
-        void whenTheUserIsSavedSuccessfully_shouldReturnTheResponse() {
-            // TODO: rewrite this once we have pure approach
-            RegisterRequest request = AuthMock.newRegisterRequest();
-            User user = request.toUser();
-            user.setPassword("some-hashed-password");
-
-            when(passwordEncoder.hashPassword(request.getPassword())).thenReturn("some-hashed-password");
-            when(repository.save(user)).thenThrow(DataIntegrityViolationException.class);
-
-            assertThatThrownBy(() -> useCase.register(request))
-                    .isInstanceOf(DuplicateEmailException.class)
-                    .hasMessage("This email is already being used.");
-
-            verify(passwordEncoder).hashPassword(request.getPassword());
-            verify(repository).save(user);
-
-            verifyNoMoreInteractions(passwordEncoder, repository);
-            verifyNoInteractions(tokenGenerator);
+            verifyNoMoreInteractions(passwordEncoder, repository, tokenGenerator);
         }
     }
 }

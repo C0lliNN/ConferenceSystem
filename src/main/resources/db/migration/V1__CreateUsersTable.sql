@@ -6,3 +6,6 @@ CREATE TABLE users (
     CONSTRAINT users_pkey PRIMARY KEY (id),
     CONSTRAINT users_email_unique UNIQUE (email)
 );
+
+CREATE INDEX idx_users_email
+    ON users (email);

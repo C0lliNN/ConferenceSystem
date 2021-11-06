@@ -3,9 +3,6 @@ package com.raphael.conferenceapp.auth.web.filter;
 import com.raphael.conferenceapp.auth.domain.User;
 import com.raphael.conferenceapp.auth.exception.InvalidTokenException;
 import com.raphael.conferenceapp.auth.web.TokenExtractor;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +27,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private static final String PREFIX = "Bearer ";
 
     @Override
-    protected boolean shouldNotFilter(final HttpServletRequest request) {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         return request.getRequestURI().startsWith("/auth");
     }
 
@@ -46,9 +43,9 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(auth);
 
             chain.doFilter(request, response);
-        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException e) {
+        } catch (Exception e) {
             SecurityContextHolder.clearContext();
-            throw new InvalidTokenException(e.getMessage());
+            throw e;
         }
     }
 

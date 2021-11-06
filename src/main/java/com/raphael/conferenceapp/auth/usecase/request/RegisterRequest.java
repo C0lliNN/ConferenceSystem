@@ -10,6 +10,11 @@ public class RegisterRequest {
     String password;
 
     public User toUser() {
-        return new User(null, name, email, password);
+        return User
+                .builder()
+                .name(name)
+                .email(email)
+                .password(password)
+                .build();
     }
 }

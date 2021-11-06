@@ -1,7 +1,8 @@
-package com.raphael.conferenceapp.mock;
+package com.raphael.conferenceapp.auth.mock;
 
 import com.github.javafaker.Faker;
 import com.raphael.conferenceapp.auth.domain.User;
+import com.raphael.conferenceapp.auth.persistence.UserEntity;
 import com.raphael.conferenceapp.auth.usecase.request.LoginRequest;
 import com.raphael.conferenceapp.auth.usecase.request.RegisterRequest;
 
@@ -9,7 +10,17 @@ public class AuthMock {
     private static final Faker FAKER = Faker.instance();
 
     public static User newUserDomain() {
-        return new User(
+        return User.builder()
+                .id(FAKER.random().nextLong(100))
+                .name(FAKER.name().firstName())
+                .email(FAKER.internet().emailAddress())
+                .password(FAKER.lorem().sentence())
+                .build();
+
+    }
+
+    public static UserEntity newUserEntity() {
+        return new UserEntity(
                 FAKER.random().nextLong(100),
                 FAKER.name().firstName(),
                 FAKER.internet().emailAddress(),
