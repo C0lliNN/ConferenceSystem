@@ -60,7 +60,7 @@ class AuthControllerTest {
     }
 
     @Nested
-    @DisplayName("login(LoginRequest)")
+    @DisplayName("method: login(LoginRequest)")
     class LoginMethod{
         private final String EMAIL = Faker.instance().internet().emailAddress();
         private final String PASSWORD = Faker.instance().internet().password(8, 16);
@@ -76,6 +76,60 @@ class AuthControllerTest {
                     .build();
 
             user = repository.save(user);
+        }
+
+        @Test
+        @DisplayName("when called without email, then it should return 400 error")
+        void whenCalledWithoutEmail_shouldReturn400Error() throws Exception {
+            LoginRequest payload = new LoginRequest(null, PASSWORD);
+
+            MockHttpServletRequestBuilder request = post(BASE_URL + "/login")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(payload));
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").value("The given payload is invalid. Check the 'details' field."))
+                    .andExpect(jsonPath("$.details[0].field").value("email"))
+                    .andExpect(jsonPath("$.details[0].message").value("the field is mandatory"));
+        }
+
+        @Test
+        @DisplayName("when called with valid email, then it should return 400 error")
+        void whenCalledWithValidEmail_shouldReturn400Error() throws Exception {
+            LoginRequest payload = new LoginRequest("test.com", PASSWORD);
+
+            MockHttpServletRequestBuilder request = post(BASE_URL + "/login")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(payload));
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").value("The given payload is invalid. Check the 'details' field."))
+                    .andExpect(jsonPath("$.details[0].field").value("email"))
+                    .andExpect(jsonPath("$.details[0].message").value("the field must be a valid email"));
+        }
+
+        @Test
+        @DisplayName("when called without password, then it should return 400 error")
+        void whenCalledWithoutPassword_shouldReturn400Error() throws Exception {
+            LoginRequest payload = new LoginRequest(EMAIL, null);
+
+            MockHttpServletRequestBuilder request = post(BASE_URL + "/login")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(payload));
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").value("The given payload is invalid. Check the 'details' field."))
+                    .andExpect(jsonPath("$.details[0].field").value("password"))
+                    .andExpect(jsonPath("$.details[0].message").value("the field is mandatory"));
         }
 
         @Test
@@ -135,6 +189,138 @@ class AuthControllerTest {
     @Nested
     @DisplayName("method: register(RegisterRequest)")
     class RegisterMethod {
+
+        @Test
+        @DisplayName("when called without name, then it should return 400 error")
+        void whenCalledWithoutName_shouldReturn400Error() throws Exception {
+            RegisterRequest payload = new RegisterRequest(
+                    null,
+                    Faker.instance().internet().emailAddress(),
+                    Faker.instance().internet().password(8, 12)
+            );
+
+            MockHttpServletRequestBuilder request = post(BASE_URL + "/register")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(payload));
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").value("The given payload is invalid. Check the 'details' field."))
+                    .andExpect(jsonPath("$.details[0].field").value("name"))
+                    .andExpect(jsonPath("$.details[0].message").value("the field is mandatory"));
+        }
+
+        @Test
+        @DisplayName("when called with invalid name, then it should return 400 error")
+        void whenCalledWithInvalidName_shouldReturn400Error() throws Exception {
+            RegisterRequest payload = new RegisterRequest(
+                    Faker.instance().lorem().fixedString(151),
+                    Faker.instance().internet().emailAddress(),
+                    Faker.instance().internet().password(8, 12)
+            );
+
+            MockHttpServletRequestBuilder request = post(BASE_URL + "/register")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(payload));
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").value("The given payload is invalid. Check the 'details' field."))
+                    .andExpect(jsonPath("$.details[0].field").value("name"))
+                    .andExpect(jsonPath("$.details[0].message").value("the field must contain at most 150 chars"));
+        }
+
+        @Test
+        @DisplayName("when called without email, then it should return 400 error")
+        void whenCalledWithoutEmail_shouldReturn400Error() throws Exception {
+            RegisterRequest payload = new RegisterRequest(
+                    Faker.instance().name().firstName(),
+                    "",
+                    Faker.instance().internet().password(8, 12)
+            );
+
+            MockHttpServletRequestBuilder request = post(BASE_URL + "/register")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(payload));
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").value("The given payload is invalid. Check the 'details' field."))
+                    .andExpect(jsonPath("$.details[0].field").value("email"))
+                    .andExpect(jsonPath("$.details[0].message").value("the field is mandatory"));
+        }
+
+        @Test
+        @DisplayName("when called with invalid email, then it should return 400 error")
+        void whenCalledWithInvalidEmail_shouldReturn400Error() throws Exception {
+            RegisterRequest payload = new RegisterRequest(
+                    Faker.instance().name().firstName(),
+                    "test.com",
+                    Faker.instance().internet().password(8, 12)
+            );
+
+            MockHttpServletRequestBuilder request = post(BASE_URL + "/register")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(payload));
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").value("The given payload is invalid. Check the 'details' field."))
+                    .andExpect(jsonPath("$.details[0].field").value("email"))
+                    .andExpect(jsonPath("$.details[0].message").value("the field must be a valid email"));
+        }
+
+        @Test
+        @DisplayName("when called without password, then it should return 400 error")
+        void whenCalledWithoutPassword_shouldReturn400Error() throws Exception {
+            RegisterRequest payload = new RegisterRequest(
+                    Faker.instance().name().firstName(),
+                    Faker.instance().internet().emailAddress(),
+                    null
+            );
+
+            MockHttpServletRequestBuilder request = post(BASE_URL + "/register")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(payload));
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").value("The given payload is invalid. Check the 'details' field."))
+                    .andExpect(jsonPath("$.details[0].field").value("password"))
+                    .andExpect(jsonPath("$.details[0].message").value("the field is mandatory"));
+        }
+
+        @Test
+        @DisplayName("when called with invalid password, then it should return 400 error")
+        void whenCalledWithInvalidPassword_shouldReturn400Error() throws Exception {
+            RegisterRequest payload = new RegisterRequest(
+                    Faker.instance().name().firstName(),
+                    Faker.instance().internet().emailAddress(),
+                    "test"
+            );
+
+            MockHttpServletRequestBuilder request = post(BASE_URL + "/register")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(payload));
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").value("The given payload is invalid. Check the 'details' field."))
+                    .andExpect(jsonPath("$.details[0].field").value("password"))
+                    .andExpect(jsonPath("$.details[0].message").value("the field must contain between 6 and 20 chars"));
+        }
 
         @Test
         @DisplayName("when called valid data, then it should return 201 and persist the user")
