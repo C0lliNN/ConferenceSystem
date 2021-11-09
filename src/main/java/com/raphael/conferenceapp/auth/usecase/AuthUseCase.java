@@ -7,9 +7,10 @@ import com.raphael.conferenceapp.auth.usecase.request.LoginRequest;
 import com.raphael.conferenceapp.auth.usecase.request.RegisterRequest;
 import com.raphael.conferenceapp.auth.usecase.response.UserResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+import javax.annotation.ManagedBean;
+
+@ManagedBean
 @AllArgsConstructor
 public class AuthUseCase {
     private final UserRepository repository;
