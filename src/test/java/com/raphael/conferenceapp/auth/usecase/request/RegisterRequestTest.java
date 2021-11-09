@@ -20,9 +20,9 @@ class RegisterRequestTest {
             RegisterRequest request = AuthMock.newRegisterRequest();
 
             User expected = User.builder()
-                    .name(request.getName())
-                    .email(request.getEmail())
-                    .password(request.getPassword())
+                    .name(request.name())
+                    .email(request.email())
+                    .password(request.password())
                     .build();
             User actual = request.toUser();
 

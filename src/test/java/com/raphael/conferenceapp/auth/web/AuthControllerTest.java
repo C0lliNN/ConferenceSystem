@@ -154,11 +154,11 @@ class AuthControllerTest {
                     .andDo(print())
                     .andExpect(status().isCreated())
                     .andExpect(jsonPath("$.id").isNumber())
-                    .andExpect(jsonPath("$.name").value(payload.getName()))
-                    .andExpect(jsonPath("$.email").value(payload.getEmail()))
+                    .andExpect(jsonPath("$.name").value(payload.name()))
+                    .andExpect(jsonPath("$.email").value(payload.email()))
                     .andExpect(jsonPath("$.token").isNotEmpty());
 
-            assertThat(repository.findByEmail(payload.getEmail())).isNotEmpty();
+            assertThat(repository.findByEmail(payload.email())).isNotEmpty();
         }
 
         @Test

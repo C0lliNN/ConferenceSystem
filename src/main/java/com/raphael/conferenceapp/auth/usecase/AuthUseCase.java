@@ -17,10 +17,10 @@ public class AuthUseCase {
     private final TokenGenerator tokenGenerator;
 
     public UserResponse login(LoginRequest request) {
-        User user = repository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new EmailNotFoundException("The email '%s' could not be found.", request.getEmail()));
+        User user = repository.findByEmail(request.email())
+                .orElseThrow(() -> new EmailNotFoundException("The email '%s' could not be found.", request.email()));
 
-        if (!passwordEncoder.comparePasswordAndHash(request.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.comparePasswordAndHash(request.password(), user.getPassword())) {
             throw new IncorrectPasswordException("The provided password is incorrect.");
         }
 

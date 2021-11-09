@@ -37,9 +37,6 @@ public class ExceptionBody {
         return fromMessage(exception.getMessage());
     }
 
-    @Value
-    public static class ErrorDetail {
-        String field;
-        String message;
+    public record ErrorDetail(String field, String message) {
     }
 }

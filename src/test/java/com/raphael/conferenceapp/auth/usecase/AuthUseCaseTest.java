@@ -54,13 +54,13 @@ class AuthUseCaseTest {
         void whenUserIsNotFound_shouldThrowAnEmailNotFoundException() {
             LoginRequest request = AuthMock.newLoginRequest();
 
-            when(repository.findByEmail(request.getEmail())).thenReturn(Optional.empty());
+            when(repository.findByEmail(request.email())).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> useCase.login(request))
                     .isInstanceOf(EmailNotFoundException.class)
-                    .hasMessage("The email '%s' could not be found.", request.getEmail());
+                    .hasMessage("The email '%s' could not be found.", request.email());
 
-            verify(repository).findByEmail(request.getEmail());
+            verify(repository).findByEmail(request.email());
             verifyNoInteractions(passwordEncoder, tokenGenerator);
         }
 
@@ -70,16 +70,16 @@ class AuthUseCaseTest {
             LoginRequest request = AuthMock.newLoginRequest();
             User user = AuthMock.newUserDomain();
 
-            when(repository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
-            when(passwordEncoder.comparePasswordAndHash(request.getPassword(), user.getPassword())).thenReturn(false);
+            when(repository.findByEmail(request.email())).thenReturn(Optional.of(user));
+            when(passwordEncoder.comparePasswordAndHash(request.password(), user.getPassword())).thenReturn(false);
 
             assertThatThrownBy(() -> useCase.login(request))
                     .isInstanceOf(IncorrectPasswordException.class)
                     .hasMessage("The provided password is incorrect.");
 
 
-            verify(repository).findByEmail(request.getEmail());
-            verify(passwordEncoder).comparePasswordAndHash(request.getPassword(), user.getPassword());
+            verify(repository).findByEmail(request.email());
+            verify(passwordEncoder).comparePasswordAndHash(request.password(), user.getPassword());
 
             verifyNoMoreInteractions(passwordEncoder);
             verifyNoInteractions(tokenGenerator);
@@ -92,8 +92,8 @@ class AuthUseCaseTest {
             User user = AuthMock.newUserDomain();
             String token = "some token";
 
-            when(repository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
-            when(passwordEncoder.comparePasswordAndHash(request.getPassword(), user.getPassword())).thenReturn(true);
+            when(repository.findByEmail(request.email())).thenReturn(Optional.of(user));
+            when(passwordEncoder.comparePasswordAndHash(request.password(), user.getPassword())).thenReturn(true);
             when(tokenGenerator.generateTokenForUser(user)).thenReturn(token);
 
             UserResponse expected = UserResponse.fromUser(user).withToken(token);
@@ -101,8 +101,8 @@ class AuthUseCaseTest {
 
             assertThat(actual).isEqualTo(expected);
 
-            verify(repository).findByEmail(request.getEmail());
-            verify(passwordEncoder).comparePasswordAndHash(request.getPassword(), user.getPassword());
+            verify(repository).findByEmail(request.email());
+            verify(passwordEncoder).comparePasswordAndHash(request.password(), user.getPassword());
             verify(tokenGenerator).generateTokenForUser(user);
 
             verifyNoMoreInteractions(passwordEncoder, tokenGenerator);
@@ -119,7 +119,7 @@ class AuthUseCaseTest {
             RegisterRequest request = AuthMock.newRegisterRequest();
             User user = request.toUser().withPassword("some-hashed-password");
 
-            when(passwordEncoder.hashPassword(request.getPassword())).thenReturn("some-hashed-password");
+            when(passwordEncoder.hashPassword(request.password())).thenReturn("some-hashed-password");
             when(repository.save(user)).thenReturn(user);
             when(tokenGenerator.generateTokenForUser(user)).thenReturn("new-token");
 
@@ -128,7 +128,7 @@ class AuthUseCaseTest {
 
             assertThat(actual).isEqualTo(expected);
 
-            verify(passwordEncoder).hashPassword(request.getPassword());
+            verify(passwordEncoder).hashPassword(request.password());
             verify(repository).save(user);
             verify(tokenGenerator).generateTokenForUser(user);
 
