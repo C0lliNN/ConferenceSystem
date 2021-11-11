@@ -28,7 +28,12 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getRequestURI().startsWith("/auth");
+        String uri = request.getRequestURI();
+
+        return uri.startsWith("/v3/api-docs") ||
+                uri.startsWith("/docs") ||
+                uri.startsWith("/swagger-ui") ||
+                uri.startsWith("/auth");
     }
 
     @Override

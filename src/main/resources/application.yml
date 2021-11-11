@@ -13,3 +13,7 @@ spring:
 jwt:
   secret: random-jwt-secret
   duration: 60000
+
+springdoc:
+  swagger-ui:
+    path: /docs

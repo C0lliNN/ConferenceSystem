@@ -3,7 +3,6 @@ package com.raphael.conferenceapp.auth.config;
 import com.raphael.conferenceapp.auth.web.filter.FilterChainExceptionHandler;
 import com.raphael.conferenceapp.auth.web.filter.JWTAuthorizationFilter;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,7 +21,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(filterChainExceptionHandler, LogoutFilter.class)
                 .addFilterAfter(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                .antMatchers("/v3/api-docs/**", "/docs/**", "/swagger-ui/**", "/auth/**").permitAll()
                 .anyRequest().authenticated();
     }
 }

@@ -4,6 +4,7 @@ import com.raphael.conferenceapp.auth.usecase.AuthUseCase;
 import com.raphael.conferenceapp.auth.usecase.request.LoginRequest;
 import com.raphael.conferenceapp.auth.usecase.request.RegisterRequest;
 import com.raphael.conferenceapp.auth.usecase.response.UserResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/auth")
+@Tag(name = "Auth")
 public class AuthController {
     private final AuthUseCase useCase;
 
