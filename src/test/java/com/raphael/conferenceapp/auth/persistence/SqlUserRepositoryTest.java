@@ -1,7 +1,7 @@
 package com.raphael.conferenceapp.auth.persistence;
 
 import com.raphael.conferenceapp.initializer.DatabaseContainerInitializer;
-import com.raphael.conferenceapp.auth.domain.User;
+import com.raphael.conferenceapp.auth.entity.User;
 import com.raphael.conferenceapp.auth.exception.DuplicateEmailException;
 import com.raphael.conferenceapp.config.DatabaseTestAutoConfiguration;
 import com.raphael.conferenceapp.auth.mock.AuthMock;

@@ -2,7 +2,7 @@ package com.raphael.conferenceapp.auth.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
-import com.raphael.conferenceapp.auth.domain.User;
+import com.raphael.conferenceapp.auth.entity.User;
 import com.raphael.conferenceapp.auth.mock.AuthMock;
 import com.raphael.conferenceapp.auth.usecase.PasswordEncoder;
 import com.raphael.conferenceapp.auth.usecase.UserRepository;

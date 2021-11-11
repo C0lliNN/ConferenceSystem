@@ -1,6 +1,6 @@
 package com.raphael.conferenceapp.auth.usecase.response;
 
-import com.raphael.conferenceapp.auth.domain.User;
+import com.raphael.conferenceapp.auth.entity.User;
 
 
 public record UserResponse(Long id, String name, String email, String token) {

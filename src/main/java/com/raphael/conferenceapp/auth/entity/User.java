@@ -1,4 +1,4 @@
-package com.raphael.conferenceapp.auth.domain;
+package com.raphael.conferenceapp.auth.entity;
 
 import lombok.Builder;
 import lombok.Value;

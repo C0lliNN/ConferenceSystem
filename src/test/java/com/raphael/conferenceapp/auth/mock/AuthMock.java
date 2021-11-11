@@ -1,7 +1,7 @@
 package com.raphael.conferenceapp.auth.mock;
 
 import com.github.javafaker.Faker;
-import com.raphael.conferenceapp.auth.domain.User;
+import com.raphael.conferenceapp.auth.entity.User;
 import com.raphael.conferenceapp.auth.persistence.UserEntity;
 import com.raphael.conferenceapp.auth.usecase.request.LoginRequest;
 import com.raphael.conferenceapp.auth.usecase.request.RegisterRequest;

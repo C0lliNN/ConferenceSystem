@@ -1,6 +1,6 @@
 package com.raphael.conferenceapp.auth.usecase.request;
 
-import com.raphael.conferenceapp.auth.domain.User;
+import com.raphael.conferenceapp.auth.entity.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

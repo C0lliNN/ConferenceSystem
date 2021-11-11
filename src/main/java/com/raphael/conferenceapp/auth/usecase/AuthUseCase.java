@@ -1,6 +1,6 @@
 package com.raphael.conferenceapp.auth.usecase;
 
-import com.raphael.conferenceapp.auth.domain.User;
+import com.raphael.conferenceapp.auth.entity.User;
 import com.raphael.conferenceapp.auth.exception.EmailNotFoundException;
 import com.raphael.conferenceapp.auth.exception.IncorrectPasswordException;
 import com.raphael.conferenceapp.auth.usecase.request.LoginRequest;

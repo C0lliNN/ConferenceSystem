@@ -1,6 +1,6 @@
 package com.raphael.conferenceapp.auth.token;
 
-import com.raphael.conferenceapp.auth.domain.User;
+import com.raphael.conferenceapp.auth.entity.User;
 import com.raphael.conferenceapp.auth.exception.InvalidTokenException;
 import com.raphael.conferenceapp.auth.usecase.TokenGenerator;
 import com.raphael.conferenceapp.auth.web.TokenExtractor;

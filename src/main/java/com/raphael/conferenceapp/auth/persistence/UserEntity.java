@@ -1,7 +1,7 @@
 package com.raphael.conferenceapp.auth.persistence;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.raphael.conferenceapp.auth.domain.User;
+import com.raphael.conferenceapp.auth.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
