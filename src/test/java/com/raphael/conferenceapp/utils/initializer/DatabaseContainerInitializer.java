@@ -1,4 +1,4 @@
-package com.raphael.conferenceapp.initializer;
+package com.raphael.conferenceapp.utils.initializer;
 
 import org.junit.ClassRule;
 import org.springframework.context.ApplicationContextInitializer;

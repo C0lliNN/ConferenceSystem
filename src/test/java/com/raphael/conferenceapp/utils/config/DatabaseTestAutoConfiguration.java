@@ -1,4 +1,4 @@
-package com.raphael.conferenceapp.config;
+package com.raphael.conferenceapp.utils.config;
 
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;

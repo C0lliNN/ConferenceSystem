@@ -8,7 +8,7 @@ import com.raphael.conferenceapp.auth.usecase.PasswordEncoder;
 import com.raphael.conferenceapp.auth.usecase.UserRepository;
 import com.raphael.conferenceapp.auth.usecase.request.LoginRequest;
 import com.raphael.conferenceapp.auth.usecase.request.RegisterRequest;
-import com.raphael.conferenceapp.initializer.DatabaseContainerInitializer;
+import com.raphael.conferenceapp.utils.initializer.DatabaseContainerInitializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

@@ -1,9 +1,9 @@
 package com.raphael.conferenceapp.auth.persistence;
 
-import com.raphael.conferenceapp.initializer.DatabaseContainerInitializer;
+import com.raphael.conferenceapp.utils.initializer.DatabaseContainerInitializer;
 import com.raphael.conferenceapp.auth.entity.User;
 import com.raphael.conferenceapp.auth.exception.DuplicateEmailException;
-import com.raphael.conferenceapp.config.DatabaseTestAutoConfiguration;
+import com.raphael.conferenceapp.utils.config.DatabaseTestAutoConfiguration;
 import com.raphael.conferenceapp.auth.mock.AuthMock;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -29,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 )
 @ContextConfiguration(initializers = DatabaseContainerInitializer.class)
 class SqlUserRepositoryTest {
+
     @Autowired
     private SqlUserRepository repository;
 
