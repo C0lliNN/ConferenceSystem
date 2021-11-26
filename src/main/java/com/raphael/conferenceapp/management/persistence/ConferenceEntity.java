@@ -17,7 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -29,28 +31,29 @@ import java.util.List;
 public class ConferenceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String title;
-    String description;
+    private Long id;
+    private String title;
+    private String description;
 
     @Column(name = "start_time")
-    LocalDateTime startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "end_time")
-    LocalDateTime endTime;
+    private LocalDateTime endTime;
 
     @Column(name = "participant_limit")
-    Integer participantLimit;
+    private Integer participantLimit;
 
     @Column(name = "user_id")
-    Long userId;
+    private Long userId;
 
     @OneToMany
     @ToString.Exclude
-    Collection<SessionEntity> sessions;
+    private Collection<SessionEntity> sessions;
 
     public Conference toDomain() {
-        List<Session> sessions = this.sessions.stream()
+        List<Session> sessions = Objects.requireNonNullElse(this.sessions, Collections.<SessionEntity>emptyList())
+                .stream()
                 .map(SessionEntity::toDomain)
                 .toList();
 
@@ -68,6 +71,15 @@ public class ConferenceEntity {
     }
 
     public static ConferenceEntity fromDomain(Conference conference) {
+        if (conference == null) {
+            return null;
+        }
+
+        List<SessionEntity> sessions = Objects.requireNonNullElse(conference.getSessions(), Collections.<Session>emptyList())
+                .stream()
+                .map(SessionEntity::fromDomain)
+                .toList();
+
         return new ConferenceEntity(
                 conference.getId(),
                 conference.getTitle(),
@@ -76,7 +88,7 @@ public class ConferenceEntity {
                 conference.getEndTime(),
                 conference.getParticipantLimit(),
                 conference.getUserId(),
-                conference.getSessions().stream().map(SessionEntity::fromDomain).toList()
+                sessions
         );
     }
 }

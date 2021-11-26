@@ -24,18 +24,18 @@ import javax.persistence.Table;
 public class SpeakerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(name = "first_name")
-    String firstName;
+    private String firstName;
 
     @Column(name = "last_name")
-    String lastName;
+    private String lastName;
 
-    String email;
+    private String email;
 
     @Column(name = "professional_title")
-    String professionalTitle;
+    private String professionalTitle;
 
     public Speaker toDomain() {
         return Speaker
@@ -49,6 +49,10 @@ public class SpeakerEntity {
     }
 
     public static SpeakerEntity fromDomain(Speaker speaker) {
+        if (speaker == null) {
+            return null;
+        }
+
         return new SpeakerEntity(
                 speaker.getId(),
                 speaker.getFirstName(),

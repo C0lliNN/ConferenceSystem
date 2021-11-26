@@ -38,8 +38,14 @@ class SpeakerEntityTest {
     class FromDomainMethod {
 
         @Test
-        @DisplayName("when called, then it should return the correct entity object")
-        void whenCalled_shouldReturnTheCorrectEntityObject() {
+        @DisplayName("when called with null, then it should return null")
+        void whenCalledWithNull_shouldReturnNull() {
+            assertThat(SpeakerEntity.fromDomain(null)).isNull();
+        }
+
+        @Test
+        @DisplayName("when called with non-null parameter, then it should return the correct entity object")
+        void whenCalledWithNonNullParameter_shouldReturnTheCorrectEntityObject() {
             Speaker speaker = SpeakerMock.newSpeakerDomain();
 
             SpeakerEntity expected = new SpeakerEntity(

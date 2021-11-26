@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -26,22 +27,22 @@ import java.time.LocalDateTime;
 public class SessionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(name = "start_time")
-    LocalDateTime startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "end_time")
-    LocalDateTime endTime;
+    private LocalDateTime endTime;
 
-    String title;
-    String description;
+    private String title;
+    private String description;
 
     @Column(name = "access_link")
-    String accessLink;
+    private String accessLink;
 
     @ManyToOne
-    SpeakerEntity speaker;
+    private SpeakerEntity speaker;
 
     public Session toDomain() {
         return Session
@@ -52,11 +53,15 @@ public class SessionEntity {
                 .title(title)
                 .description(description)
                 .accessLink(accessLink)
-                .speaker(speaker.toDomain())
+                .speaker(Optional.ofNullable(speaker).map(SpeakerEntity::toDomain).orElse(null))
                 .build();
     }
 
     public static SessionEntity fromDomain(Session session) {
+        if (session == null) {
+            return null;
+        }
+
         return new SessionEntity(
                 session.getId(),
                 session.getStartTime(),

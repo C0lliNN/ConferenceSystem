@@ -15,8 +15,29 @@ class SessionEntityTest {
     class ToDomainMethod {
 
         @Test
-        @DisplayName("when called, then it should return the correct domain object")
-        void whenCalled_shouldReturnTheCorrectDomainObject() {
+        @DisplayName("when speaker is null, then it should create a session without the speaker")
+        void whenSpeakerIsNull_shouldCreateSessionWithoutTheSpeaker() {
+            SessionEntity entity = SessionMock.newSessionEntity();
+            entity.setSpeaker(null);
+
+            Session expected = Session.builder()
+                    .id(entity.getId())
+                    .startTime(entity.getStartTime())
+                    .endTime(entity.getEndTime())
+                    .title(entity.getTitle())
+                    .description(entity.getDescription())
+                    .accessLink(entity.getAccessLink())
+                    .speaker(null)
+                    .build();
+
+            Session actual = entity.toDomain();
+
+            assertThat(actual).isEqualTo(expected);
+        }
+
+        @Test
+        @DisplayName("when speaker is not null, then it should return the correct domain object")
+        void whenSpeakerIsNotNull_shouldReturnTheCorrectDomainObject() {
             SessionEntity entity = SessionMock.newSessionEntity();
 
             Session expected = Session.builder()
@@ -40,8 +61,40 @@ class SessionEntityTest {
     class FromDomainMethod {
 
         @Test
-        @DisplayName("when called, then it should return the correct entity object")
-        void whenCalled_shouldReturnTheCorrectEntityObject() {
+        @DisplayName("when called with null, then it should return null")
+        void whenCalledWithNull_shouldReturnNull() {
+            assertThat(SessionEntity.fromDomain(null)).isNull();
+        }
+
+        @Test
+        @DisplayName("when speaker is null, then should return a session without speaker")
+        void whenSpeakerIsNull_shouldReturnASessionWithoutSpeaker() {
+            Session session = SessionMock.newSessionDomain().toBuilder().speaker(null).build();
+
+            SessionEntity expected = new SessionEntity(
+                    session.getId(),
+                    session.getStartTime(),
+                    session.getEndTime(),
+                    session.getTitle(),
+                    session.getDescription(),
+                    session.getAccessLink(),
+                    null
+            );
+
+            SessionEntity actual = SessionEntity.fromDomain(session);
+
+            assertThat(actual.getId()).isEqualTo(expected.getId());
+            assertThat(actual.getStartTime()).isEqualTo(expected.getStartTime());
+            assertThat(actual.getEndTime()).isEqualTo(expected.getEndTime());
+            assertThat(actual.getTitle()).isEqualTo(expected.getTitle());
+            assertThat(actual.getDescription()).isEqualTo(expected.getDescription());
+            assertThat(actual.getAccessLink()).isEqualTo(expected.getAccessLink());
+            assertThat(actual.getSpeaker()).isNull();
+        }
+
+        @Test
+        @DisplayName("when speaker is not null, then it should return the correct entity object")
+        void whenSpeakerIsNotNull_shouldReturnTheCorrectEntityObject() {
             Session session = SessionMock.newSessionDomain();
 
             SessionEntity expected = new SessionEntity(
