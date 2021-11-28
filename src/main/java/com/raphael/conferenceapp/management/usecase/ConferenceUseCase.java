@@ -14,7 +14,7 @@ import javax.annotation.ManagedBean;
 
 @ManagedBean
 @AllArgsConstructor
-public class ConferenceManagementUseCase {
+public class ConferenceUseCase {
     private ConferenceRepository conferenceRepository;
 
     public PaginatedItemsResponse<ConferenceResponse> getConferences(SearchConferencesRequest request) {
@@ -44,7 +44,7 @@ public class ConferenceManagementUseCase {
         Conference existingConference = conferenceRepository.findById(conferenceId)
                 .orElseThrow(() -> new EntityNotFoundException("Conference with ID %d not found.", conferenceId));
 
-        if (!existingConference.getSessions().isEmpty()) {
+        if (existingConference.hasSessions()) {
             throw new DeletionConflictException("Could not delete Conference %d because it has associated sessions", conferenceId);
         }
 

@@ -64,7 +64,7 @@ public class SqlConferenceRepository implements ConferenceRepository {
 
     @Override
     public Optional<Conference> findById(final Long conferenceId) {
-        return jpaRepository.findById(conferenceId).map(ConferenceEntity::toDomain);
+        return jpaRepository.findOneWithSessionsById(conferenceId).map(ConferenceEntity::toDomain);
     }
 
     @Override

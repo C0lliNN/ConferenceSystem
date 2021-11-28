@@ -9,6 +9,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: postgres
+  jpa:
+    show-sql: true
 
 jwt:
   secret: random-jwt-secret

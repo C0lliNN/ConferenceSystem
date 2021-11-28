@@ -13,10 +13,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +28,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
+@NamedEntityGraph(name = "Conference.sessions", attributeNodes = @NamedAttributeNode("sessions"))
 @Table(name = "conferences")
 public class ConferenceEntity {
     @Id
@@ -47,9 +49,9 @@ public class ConferenceEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @OneToMany
+    @OneToMany(mappedBy = "id")
     @ToString.Exclude
-    private Collection<SessionEntity> sessions;
+    private List<SessionEntity> sessions;
 
     public Conference toDomain() {
         List<Session> sessions = Objects.requireNonNullElse(this.sessions, Collections.<SessionEntity>emptyList())

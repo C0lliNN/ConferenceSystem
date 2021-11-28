@@ -26,4 +26,8 @@ public class Conference {
 
         return sessions;
     }
+
+    public boolean hasSessions() {
+        return !getSessions().isEmpty();
+    }
 }
