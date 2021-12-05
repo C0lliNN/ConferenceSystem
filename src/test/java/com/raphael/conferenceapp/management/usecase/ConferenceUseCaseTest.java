@@ -58,7 +58,7 @@ class ConferenceUseCaseTest {
 
             when(repository.findByQuery(request.toQuery())).thenReturn(paginatedItems);
 
-            PaginatedItemsResponse<ConferenceResponse> expected = PaginatedItemsResponse.fromDomain(paginatedItems);
+            PaginatedItemsResponse<ConferenceResponse> expected = PaginatedItemsResponse.fromPaginatedConferences(paginatedItems);
             PaginatedItemsResponse<ConferenceResponse> actual = useCase.getConferences(request);
 
             assertThat(actual).isEqualTo(expected);

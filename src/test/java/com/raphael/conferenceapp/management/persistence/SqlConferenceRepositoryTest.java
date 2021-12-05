@@ -306,8 +306,8 @@ class SqlConferenceRepositoryTest {
         }
 
         @Test
-        @DisplayName("when called with unknown id, then it should return an error")
-        void whenCalledWithUnknownId_shouldNotReturnAnyError() {
+        @DisplayName("when called with unknown id, then it should throw an exception")
+        void whenCalledWithUnknownId_shouldNotThrowAnException() {
             assertThatCode(() -> repository.delete(500L))
                     .isInstanceOf(EmptyResultDataAccessException.class);
         }

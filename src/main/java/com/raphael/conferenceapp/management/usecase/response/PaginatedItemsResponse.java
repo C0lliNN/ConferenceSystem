@@ -2,6 +2,7 @@ package com.raphael.conferenceapp.management.usecase.response;
 
 import com.raphael.conferenceapp.management.entity.Conference;
 import com.raphael.conferenceapp.management.entity.PaginatedItems;
+import com.raphael.conferenceapp.management.entity.Speaker;
 
 import java.util.Collection;
 
@@ -12,7 +13,7 @@ public record PaginatedItemsResponse<T>(
         Long totalItems,
         Long totalPages) {
 
-    public static PaginatedItemsResponse<ConferenceResponse> fromDomain(PaginatedItems<Conference> paginatedItems) {
+    public static PaginatedItemsResponse<ConferenceResponse> fromPaginatedConferences(PaginatedItems<Conference> paginatedItems) {
         Collection<ConferenceResponse> conferences = paginatedItems.items()
                 .stream()
                 .map(ConferenceResponse::fromDomain)
@@ -20,6 +21,21 @@ public record PaginatedItemsResponse<T>(
 
         return new PaginatedItemsResponse<>(
                 conferences,
+                paginatedItems.currentPage(),
+                paginatedItems.limit(),
+                paginatedItems.totalItems(),
+                paginatedItems.totalPages()
+        );
+    }
+
+    public static PaginatedItemsResponse<SpeakerResponse> fromPaginatedSpeakers(PaginatedItems<Speaker> paginatedItems) {
+        Collection<SpeakerResponse> speakers = paginatedItems.items()
+                .stream()
+                .map(SpeakerResponse::fromDomain)
+                .toList();
+
+        return new PaginatedItemsResponse<>(
+                speakers,
                 paginatedItems.currentPage(),
                 paginatedItems.limit(),
                 paginatedItems.totalItems(),

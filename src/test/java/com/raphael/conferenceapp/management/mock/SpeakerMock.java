@@ -3,6 +3,7 @@ package com.raphael.conferenceapp.management.mock;
 import com.github.javafaker.Faker;
 import com.raphael.conferenceapp.management.entity.Speaker;
 import com.raphael.conferenceapp.management.persistence.SpeakerEntity;
+import com.raphael.conferenceapp.management.usecase.request.CreateSpeakerRequest;
 
 public class SpeakerMock {
     private static final Faker FAKER = Faker.instance();
@@ -25,5 +26,14 @@ public class SpeakerMock {
                 .email(FAKER.internet().emailAddress())
                 .professionalTitle(FAKER.job().title())
                 .build();
+    }
+
+    public static CreateSpeakerRequest newCreateRequest() {
+        return new CreateSpeakerRequest(
+                FAKER.name().firstName(),
+                FAKER.name().lastName(),
+                FAKER.internet().emailAddress(),
+                FAKER.job().title()
+        );
     }
 }

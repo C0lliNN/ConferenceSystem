@@ -18,7 +18,7 @@ public class ConferenceUseCase {
     private ConferenceRepository conferenceRepository;
 
     public PaginatedItemsResponse<ConferenceResponse> getConferences(SearchConferencesRequest request) {
-        return PaginatedItemsResponse.fromDomain(conferenceRepository.findByQuery(request.toQuery()));
+        return PaginatedItemsResponse.fromPaginatedConferences(conferenceRepository.findByQuery(request.toQuery()));
     }
 
     public ConferenceResponse getConference(Long conferenceId) {
@@ -32,12 +32,10 @@ public class ConferenceUseCase {
     }
 
     public void updateConference(Long conferenceId, UpdateConferenceRequest request) {
-        Conference existingConference = conferenceRepository.findById(conferenceId)
+        Conference conference = conferenceRepository.findById(conferenceId)
                 .orElseThrow(() -> new EntityNotFoundException("Conference with ID %d not found.", conferenceId));
 
-        Conference updatedConference = request.apply(existingConference);
-
-        conferenceRepository.save(updatedConference);
+        conferenceRepository.save(request.apply(conference));
     }
 
     public void deleteConference(Long conferenceId) {
