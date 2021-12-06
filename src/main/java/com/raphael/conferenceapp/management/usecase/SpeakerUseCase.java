@@ -8,6 +8,8 @@ import com.raphael.conferenceapp.management.usecase.request.UpdateSpeakerRequest
 import com.raphael.conferenceapp.management.usecase.response.PaginatedItemsResponse;
 import com.raphael.conferenceapp.management.usecase.response.SpeakerResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.ManagedBean;
 
@@ -30,6 +32,7 @@ public class SpeakerUseCase {
         return SpeakerResponse.fromDomain(repository.save(request.toDomain()));
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void updateSpeaker(Long speakerId, UpdateSpeakerRequest request) {
         Speaker speaker = repository.findById(speakerId)
                 .orElseThrow(() -> new EntityNotFoundException("Speaker with ID %d not found.", speakerId));

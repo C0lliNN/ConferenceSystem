@@ -9,6 +9,8 @@ import com.raphael.conferenceapp.management.usecase.request.UpdateConferenceRequ
 import com.raphael.conferenceapp.management.usecase.response.ConferenceResponse;
 import com.raphael.conferenceapp.management.usecase.response.PaginatedItemsResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.ManagedBean;
 
@@ -31,6 +33,7 @@ public class ConferenceUseCase {
         return ConferenceResponse.fromDomain(conferenceRepository.save(request.toDomain(userId)));
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void updateConference(Long conferenceId, UpdateConferenceRequest request) {
         Conference conference = conferenceRepository.findById(conferenceId)
                 .orElseThrow(() -> new EntityNotFoundException("Conference with ID %d not found.", conferenceId));
@@ -38,6 +41,7 @@ public class ConferenceUseCase {
         conferenceRepository.save(request.apply(conference));
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void deleteConference(Long conferenceId) {
         Conference existingConference = conferenceRepository.findById(conferenceId)
                 .orElseThrow(() -> new EntityNotFoundException("Conference with ID %d not found.", conferenceId));
