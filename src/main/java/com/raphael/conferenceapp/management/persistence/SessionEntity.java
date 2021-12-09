@@ -41,6 +41,9 @@ public class SessionEntity {
     @Column(name = "access_link")
     private String accessLink;
 
+    @Column(name = "conference_id")
+    private Long conferenceId;
+
     @ManyToOne
     private SpeakerEntity speaker;
 
@@ -53,6 +56,7 @@ public class SessionEntity {
                 .title(title)
                 .description(description)
                 .accessLink(accessLink)
+                .conferenceId(conferenceId)
                 .speaker(Optional.ofNullable(speaker).map(SpeakerEntity::toDomain).orElse(null))
                 .build();
     }
@@ -69,6 +73,7 @@ public class SessionEntity {
                 session.getTitle(),
                 session.getDescription(),
                 session.getAccessLink(),
+                session.getConferenceId(),
                 SpeakerEntity.fromDomain(session.getSpeaker())
         );
     }

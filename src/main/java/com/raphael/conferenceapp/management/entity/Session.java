@@ -14,5 +14,6 @@ public class Session {
     String title;
     String description;
     String accessLink;
+    Long conferenceId;
     Speaker speaker;
 }

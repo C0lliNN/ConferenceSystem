@@ -27,6 +27,7 @@ class SessionEntityTest {
                     .title(entity.getTitle())
                     .description(entity.getDescription())
                     .accessLink(entity.getAccessLink())
+                    .conferenceId(entity.getConferenceId())
                     .speaker(null)
                     .build();
 
@@ -47,6 +48,7 @@ class SessionEntityTest {
                     .title(entity.getTitle())
                     .description(entity.getDescription())
                     .accessLink(entity.getAccessLink())
+                    .conferenceId(entity.getConferenceId())
                     .speaker(entity.getSpeaker().toDomain())
                     .build();
 
@@ -78,6 +80,7 @@ class SessionEntityTest {
                     session.getTitle(),
                     session.getDescription(),
                     session.getAccessLink(),
+                    session.getConferenceId(),
                     null
             );
 
@@ -104,6 +107,7 @@ class SessionEntityTest {
                     session.getTitle(),
                     session.getDescription(),
                     session.getAccessLink(),
+                    session.getConferenceId(),
                     SpeakerEntity.fromDomain(session.getSpeaker())
             );
 
