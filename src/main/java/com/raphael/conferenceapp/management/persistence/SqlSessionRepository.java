@@ -10,7 +10,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @Component
 public class SqlSessionRepository implements SessionRepository {
-    private final JPASessionRepository jpaRepository;
+    private final JpaSessionRepository jpaRepository;
 
     @Override
     public Collection<Session> findByConferenceId(final Long conferenceId) {

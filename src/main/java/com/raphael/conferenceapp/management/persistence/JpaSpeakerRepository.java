@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JPASpeakerRepository extends JpaRepository<SpeakerEntity, Long>, JpaSpecificationExecutor<SpeakerEntity> {
+public interface JpaSpeakerRepository extends JpaRepository<SpeakerEntity, Long>, JpaSpecificationExecutor<SpeakerEntity> {
 }

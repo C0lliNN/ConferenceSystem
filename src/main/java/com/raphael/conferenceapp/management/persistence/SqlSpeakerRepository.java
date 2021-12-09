@@ -20,7 +20,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Component
 public class SqlSpeakerRepository implements SpeakerRepository {
-    private final JPASpeakerRepository jpaRepository;
+    private final JpaSpeakerRepository jpaRepository;
 
     @Override
     public PaginatedItems<Speaker> findByQuery(final SpeakerQuery query) {

@@ -20,7 +20,7 @@ import java.util.Optional;
 @Component
 @AllArgsConstructor
 public class SqlConferenceRepository implements ConferenceRepository {
-    private final JPAConferenceRepository jpaRepository;
+    private final JpaConferenceRepository jpaRepository;
 
     @Override
     public PaginatedItems<Conference> findByQuery(final ConferenceQuery query) {

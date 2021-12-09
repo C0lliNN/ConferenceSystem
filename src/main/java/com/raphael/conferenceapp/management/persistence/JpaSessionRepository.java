@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface JPASessionRepository extends JpaRepository<SessionEntity, Long> {
+public interface JpaSessionRepository extends JpaRepository<SessionEntity, Long> {
     List<SessionEntity> findByConferenceId(Long conferenceId);
 }
