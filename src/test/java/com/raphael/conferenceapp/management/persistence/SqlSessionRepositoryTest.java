@@ -91,6 +91,33 @@ class SqlSessionRepositoryTest {
     }
 
     @Nested
+    @DisplayName("method: findById(Long)")
+    class FindByIdMethod {
+        private Session session;
+
+        @BeforeEach
+        void setUp() {
+            this.session = SessionMock.newSessionDomain();
+
+            Speaker speaker = speakerRepository.save(session.getSpeaker());
+
+            this.session = sessionRepository.save(session.toBuilder().speaker(speaker).build());
+        }
+
+        @Test
+        @DisplayName("when called with unknown id, then it should return Optional empty")
+        void whenCalledWithUnknownId_shouldReturnOptionalEmpty() {
+            assertThat(sessionRepository.findById(500L)).isEmpty();
+        }
+
+        @Test
+        @DisplayName("when called with existing id, then it should return the matching session wrapped in an Optional")
+        void whenCalledWithExistingId_shouldReturnTheMatchingSessionWrappedInAnOptional() {
+            assertThat(sessionRepository.findById(session.getId())).hasValue(session);
+        }
+    }
+
+    @Nested
     @DisplayName("method: save(Session)")
     class SessionMethod {
         private Session session;
@@ -99,9 +126,9 @@ class SqlSessionRepositoryTest {
         void setUp() {
             this.session = SessionMock.newSessionDomain();
 
-            Speaker speaker3 = speakerRepository.save(session.getSpeaker());
+            Speaker speaker = speakerRepository.save(session.getSpeaker());
 
-            this.session = session.toBuilder().speaker(speaker3).build();
+            this.session = session.toBuilder().speaker(speaker).build();
         }
 
         @Test

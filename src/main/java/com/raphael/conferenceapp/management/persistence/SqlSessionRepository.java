@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Component
@@ -18,6 +19,11 @@ public class SqlSessionRepository implements SessionRepository {
                 .stream()
                 .map(SessionEntity::toDomain)
                 .toList();
+    }
+
+    @Override
+    public Optional<Session> findById(Long sessionId) {
+        return jpaRepository.findById(sessionId).map(SessionEntity::toDomain);
     }
 
     @Override

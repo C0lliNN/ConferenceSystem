@@ -5,6 +5,7 @@ import com.raphael.conferenceapp.management.entity.Session;
 import com.raphael.conferenceapp.management.entity.Speaker;
 import com.raphael.conferenceapp.management.persistence.SessionEntity;
 import com.raphael.conferenceapp.management.persistence.SpeakerEntity;
+import com.raphael.conferenceapp.management.usecase.request.CreateSessionRequest;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -40,5 +41,17 @@ public class SessionMock {
                 .conferenceId(FAKER.random().nextLong(100))
                 .speaker(speaker)
                 .build();
+    }
+
+    public static CreateSessionRequest newCreateRequest() {
+        return new CreateSessionRequest(
+                FAKER.company().name(),
+                FAKER.lorem().sentence(),
+                LocalDateTime.of(2021, Month.NOVEMBER, 20, 15, 50),
+                LocalDateTime.of(2021, Month.NOVEMBER, 20, 17, 50),
+                FAKER.internet().url(),
+                FAKER.random().nextLong(100),
+                FAKER.random().nextLong(100)
+        );
     }
 }
