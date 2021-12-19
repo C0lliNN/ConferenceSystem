@@ -1,8 +1,10 @@
 package com.raphael.conferenceapp.management.persistence;
 
 import com.raphael.conferenceapp.management.entity.Session;
+import com.raphael.conferenceapp.management.exception.EntityNotFoundException;
 import com.raphael.conferenceapp.management.usecase.SessionRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -33,6 +35,10 @@ public class SqlSessionRepository implements SessionRepository {
 
     @Override
     public void delete(final Long sessionId) {
-        jpaRepository.deleteById(sessionId);
+        try {
+            jpaRepository.deleteById(sessionId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntityNotFoundException("Session with ID %d was not found.", sessionId);
+        }
     }
 }

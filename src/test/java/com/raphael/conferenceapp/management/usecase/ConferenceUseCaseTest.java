@@ -79,7 +79,7 @@ class ConferenceUseCaseTest {
 
             assertThatThrownBy(() -> useCase.getConference(1L))
                     .isInstanceOf(EntityNotFoundException.class)
-                    .hasMessage("Conference with ID %d not found.", 1L);
+                    .hasMessage("Conference with ID %d was not found.", 1L);
 
             verify(repository).findById(1L);
             verifyNoMoreInteractions(repository);
@@ -139,7 +139,7 @@ class ConferenceUseCaseTest {
 
             assertThatThrownBy(() -> useCase.updateConference(conferenceId, request))
                     .isInstanceOf(EntityNotFoundException.class)
-                    .hasMessage("Conference with ID %d not found.", conferenceId);
+                    .hasMessage("Conference with ID %d was not found.", conferenceId);
 
             verify(repository).findById(conferenceId);
             verifyNoMoreInteractions(repository);
@@ -174,7 +174,7 @@ class ConferenceUseCaseTest {
 
             assertThatThrownBy(() -> useCase.deleteConference(1L))
                     .isInstanceOf(EntityNotFoundException.class)
-                    .hasMessage("Conference with ID %d not found.", 1L);
+                    .hasMessage("Conference with ID %d was not found.", 1L);
 
             verify(repository).findById(1L);
             verifyNoMoreInteractions(repository);

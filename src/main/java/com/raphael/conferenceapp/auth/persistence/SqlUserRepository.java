@@ -12,7 +12,7 @@ import java.util.Optional;
 @Component
 @AllArgsConstructor
 public class SqlUserRepository implements UserRepository {
-    private final JPAUserRepository jpaUserRepository;
+    private final JpaUserRepository jpaUserRepository;
 
     @Override
     public Optional<User> findByEmail(final String email) {

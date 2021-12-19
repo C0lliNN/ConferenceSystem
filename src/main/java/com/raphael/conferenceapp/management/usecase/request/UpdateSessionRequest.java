@@ -2,15 +2,21 @@ package com.raphael.conferenceapp.management.usecase.request;
 
 import com.raphael.conferenceapp.management.entity.Session;
 import com.raphael.conferenceapp.management.entity.Speaker;
+import org.hibernate.validator.constraints.URL;
 
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 public record UpdateSessionRequest(
+        @Size(max = 150, message = "the field must contain at most {max} characters")
         String title,
+
         String description,
         LocalDateTime startTime,
         LocalDateTime endTime,
+
+        @URL(message = "the field must contain a valid URL")
         String accessLink,
         Long speakerId) {
 

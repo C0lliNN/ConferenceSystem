@@ -3,9 +3,11 @@ package com.raphael.conferenceapp.management.persistence;
 import com.raphael.conferenceapp.management.entity.PaginatedItems;
 import com.raphael.conferenceapp.management.entity.Speaker;
 import com.raphael.conferenceapp.management.entity.SpeakerQuery;
+import com.raphael.conferenceapp.management.exception.EntityNotFoundException;
 import com.raphael.conferenceapp.management.usecase.SpeakerRepository;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -71,6 +73,10 @@ public class SqlSpeakerRepository implements SpeakerRepository {
 
     @Override
     public void delete(final Long id) {
-        jpaRepository.deleteById(id);
+        try {
+            jpaRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntityNotFoundException("Speaker with ID %d was not found.", id);
+        }
     }
 }

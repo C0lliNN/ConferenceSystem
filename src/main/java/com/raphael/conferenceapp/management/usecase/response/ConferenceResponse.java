@@ -13,7 +13,7 @@ public record ConferenceResponse(
         LocalDateTime endTime,
         Integer participantLimit,
         Long userId,
-        Collection<SessionResponse>sessions) {
+        Collection<SessionResponse> sessions) {
 
     public static ConferenceResponse fromDomain(Conference conference) {
         return new ConferenceResponse(

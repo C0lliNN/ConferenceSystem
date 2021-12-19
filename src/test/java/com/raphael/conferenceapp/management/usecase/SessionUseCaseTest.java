@@ -85,7 +85,7 @@ class SessionUseCaseTest {
 
             assertThatThrownBy(() -> useCase.updateSession(2L, request))
                     .isInstanceOf(EntityNotFoundException.class)
-                    .hasMessage("Session with ID %d not found.", 2L);
+                    .hasMessage("Session with ID %d was not found.", 2L);
 
             verify(repository).findById(2L);
             verifyNoMoreInteractions(repository);

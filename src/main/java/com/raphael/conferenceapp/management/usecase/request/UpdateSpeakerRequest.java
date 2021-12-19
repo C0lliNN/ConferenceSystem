@@ -2,12 +2,20 @@ package com.raphael.conferenceapp.management.usecase.request;
 
 import com.raphael.conferenceapp.management.entity.Speaker;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import java.util.Optional;
 
 public record UpdateSpeakerRequest(
+        @Size(max = 200, message = "the field must contain at most {max} characters")
         String firstName,
+
+        @Size(max = 200, message = "the field must contain at most {max} characters")
         String lastName,
+
+        @Email(message = "the field must contain a valid email")
         String email,
+
         String professionalTitle) {
 
     public Speaker apply(Speaker speaker) {

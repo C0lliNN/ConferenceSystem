@@ -28,7 +28,7 @@ public class SessionUseCase {
 
     public void updateSession(Long sessionId, UpdateSessionRequest request) {
         Session session = repository.findById(sessionId)
-                .orElseThrow(() -> new EntityNotFoundException("Session with ID %d not found.", sessionId));
+                .orElseThrow(() -> new EntityNotFoundException("Session with ID %d was not found.", sessionId));
 
         repository.save(request.apply(session));
     }

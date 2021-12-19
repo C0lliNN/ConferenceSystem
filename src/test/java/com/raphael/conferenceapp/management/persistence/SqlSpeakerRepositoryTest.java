@@ -4,6 +4,7 @@ import com.raphael.conferenceapp.management.entity.PaginatedItems;
 import com.raphael.conferenceapp.management.entity.PaginationConstants;
 import com.raphael.conferenceapp.management.entity.Speaker;
 import com.raphael.conferenceapp.management.entity.SpeakerQuery;
+import com.raphael.conferenceapp.management.exception.EntityNotFoundException;
 import com.raphael.conferenceapp.management.mock.SpeakerMock;
 import com.raphael.conferenceapp.utils.config.DatabaseTestAutoConfiguration;
 import com.raphael.conferenceapp.utils.initializer.DatabaseContainerInitializer;
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.transaction.Transactional;
@@ -215,7 +215,7 @@ class SqlSpeakerRepositoryTest {
         @DisplayName("when called with unknown id, then it should throw an exception")
         void whenCalledWithUnknownId_shouldNotThrowAnException() {
             assertThatCode(() -> repository.delete(500L))
-                    .isInstanceOf(EmptyResultDataAccessException.class);
+                    .isInstanceOf(EntityNotFoundException.class);
         }
     }
 }

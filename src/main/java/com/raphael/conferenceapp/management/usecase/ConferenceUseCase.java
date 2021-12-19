@@ -26,7 +26,7 @@ public class ConferenceUseCase {
     public ConferenceResponse getConference(Long conferenceId) {
         return conferenceRepository.findById(conferenceId)
                 .map(ConferenceResponse::fromDomain)
-                .orElseThrow(() -> new EntityNotFoundException("Conference with ID %d not found.", conferenceId));
+                .orElseThrow(() -> new EntityNotFoundException("Conference with ID %d was not found.", conferenceId));
     }
 
     public ConferenceResponse createConference(CreateConferenceRequest request, Long userId) {
@@ -36,7 +36,7 @@ public class ConferenceUseCase {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void updateConference(Long conferenceId, UpdateConferenceRequest request) {
         Conference conference = conferenceRepository.findById(conferenceId)
-                .orElseThrow(() -> new EntityNotFoundException("Conference with ID %d not found.", conferenceId));
+                .orElseThrow(() -> new EntityNotFoundException("Conference with ID %d was not found.", conferenceId));
 
         conferenceRepository.save(request.apply(conference));
     }
@@ -44,7 +44,7 @@ public class ConferenceUseCase {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void deleteConference(Long conferenceId) {
         Conference existingConference = conferenceRepository.findById(conferenceId)
-                .orElseThrow(() -> new EntityNotFoundException("Conference with ID %d not found.", conferenceId));
+                .orElseThrow(() -> new EntityNotFoundException("Conference with ID %d was not found.", conferenceId));
 
         if (existingConference.hasSessions()) {
             throw new DeletionConflictException("Could not delete Conference %d because it has associated sessions", conferenceId);
