@@ -2,8 +2,10 @@ package com.raphael.conferenceapp.management.usecase.response;
 
 import com.raphael.conferenceapp.management.entity.Conference;
 import com.raphael.conferenceapp.management.entity.PaginatedItems;
+import com.raphael.conferenceapp.management.entity.Participant;
 import com.raphael.conferenceapp.management.entity.Speaker;
 import com.raphael.conferenceapp.management.mock.ConferenceMock;
+import com.raphael.conferenceapp.management.mock.ParticipantMock;
 import com.raphael.conferenceapp.management.mock.SpeakerMock;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -72,6 +74,37 @@ class PaginatedItemsResponseTest {
             );
 
             PaginatedItemsResponse<SpeakerResponse> actual = PaginatedItemsResponse.fromPaginatedSpeakers(paginatedItems);
+
+            assertThat(actual).isEqualTo(expected);
+        }
+    }
+
+    @Nested
+    @DisplayName("method: fromPaginatedParticipants(PaginatedItems<Participant>")
+    class FromPaginatedParticipantsMethod {
+
+        @Test
+        @DisplayName("when called, it should create a response object")
+        void whenCalled_shouldCreateResponseObject() {
+            Participant participant1 = ParticipantMock.newParticipantDomain();
+            Participant participant2 = ParticipantMock.newParticipantDomain();
+
+            PaginatedItems<Participant> paginatedItems = new PaginatedItems<>(
+                    List.of(participant1, participant2),
+                    10L,
+                    2L,
+                    0L
+            );
+
+            PaginatedItemsResponse<ParticipantResponse> expected = new PaginatedItemsResponse<>(
+                    List.of(ParticipantResponse.fromDomain(participant1), ParticipantResponse.fromDomain(participant2)),
+                    paginatedItems.currentPage(),
+                    paginatedItems.limit(),
+                    paginatedItems.totalItems(),
+                    paginatedItems.totalPages()
+            );
+
+            PaginatedItemsResponse<ParticipantResponse> actual = PaginatedItemsResponse.fromPaginatedParticipants(paginatedItems);
 
             assertThat(actual).isEqualTo(expected);
         }
