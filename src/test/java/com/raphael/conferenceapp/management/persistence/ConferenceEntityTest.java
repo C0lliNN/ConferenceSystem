@@ -29,6 +29,7 @@ class ConferenceEntityTest {
                     .startTime(entity.getStartTime())
                     .endTime(entity.getEndTime())
                     .participantLimit(entity.getParticipantLimit())
+                    .totalParticipants(entity.getTotalParticipants())
                     .userId(entity.getUserId())
                     .sessions(Collections.emptyList())
                     .build();
@@ -50,6 +51,7 @@ class ConferenceEntityTest {
                     .startTime(entity.getStartTime())
                     .endTime(entity.getEndTime())
                     .participantLimit(entity.getParticipantLimit())
+                    .totalParticipants(entity.getTotalParticipants())
                     .userId(entity.getUserId())
                     .sessions(Collections.emptyList())
                     .build();
@@ -81,6 +83,7 @@ class ConferenceEntityTest {
                     conference.getDescription(),
                     conference.getStartTime(),
                     conference.getEndTime(),
+                    conference.getTotalParticipants(),
                     conference.getParticipantLimit(),
                     conference.getUserId(),
                     Collections.emptyList()
@@ -93,6 +96,7 @@ class ConferenceEntityTest {
             assertThat(actual.getDescription()).isEqualTo(expected.getDescription());
             assertThat(actual.getStartTime()).isEqualTo(expected.getStartTime());
             assertThat(actual.getEndTime()).isEqualTo(expected.getEndTime());
+            assertThat(actual.getTotalParticipants()).isEqualTo(expected.getTotalParticipants());
             assertThat(actual.getParticipantLimit()).isEqualTo(expected.getParticipantLimit());
             assertThat(actual.getUserId()).isEqualTo(expected.getUserId());
             assertThat(actual.getSessions()).isEmpty();
@@ -109,6 +113,7 @@ class ConferenceEntityTest {
                     conference.getDescription(),
                     conference.getStartTime(),
                     conference.getEndTime(),
+                    conference.getTotalParticipants(),
                     conference.getParticipantLimit(),
                     conference.getUserId(),
                     Collections.emptyList()
@@ -121,6 +126,7 @@ class ConferenceEntityTest {
             assertThat(actual.getDescription()).isEqualTo(expected.getDescription());
             assertThat(actual.getStartTime()).isEqualTo(expected.getStartTime());
             assertThat(actual.getEndTime()).isEqualTo(expected.getEndTime());
+            assertThat(actual.getTotalParticipants()).isEqualTo(expected.getTotalParticipants());
             assertThat(actual.getParticipantLimit()).isEqualTo(expected.getParticipantLimit());
             assertThat(actual.getUserId()).isEqualTo(expected.getUserId());
             assertThat(actual.getSessions()).isEmpty();

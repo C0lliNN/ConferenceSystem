@@ -48,16 +48,19 @@ class SqlSpeakerRepositoryTest {
         void setUp() {
             this.speaker1 = SpeakerMock.newSpeakerDomain()
                     .toBuilder()
+                    .id(null)
                     .firstName("John")
                     .build();
 
             this.speaker2 = SpeakerMock.newSpeakerDomain()
                     .toBuilder()
+                    .id(null)
                     .firstName("Mary")
                     .build();
 
             this.speaker3 = SpeakerMock.newSpeakerDomain()
                     .toBuilder()
+                    .id(null)
                     .firstName("Alfred")
                     .build();
 

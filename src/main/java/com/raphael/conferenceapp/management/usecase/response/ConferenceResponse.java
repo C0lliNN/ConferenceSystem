@@ -11,6 +11,7 @@ public record ConferenceResponse(
         String description,
         LocalDateTime startTime,
         LocalDateTime endTime,
+        Integer totalParticipants,
         Integer participantLimit,
         Long userId,
         Collection<SessionResponse> sessions) {
@@ -22,6 +23,7 @@ public record ConferenceResponse(
                 conference.getDescription(),
                 conference.getStartTime(),
                 conference.getEndTime(),
+                conference.getTotalParticipants(),
                 conference.getParticipantLimit(),
                 conference.getUserId(),
                 conference.getSessions().stream().map(SessionResponse::fromDomain).toList()

@@ -40,6 +40,9 @@ public class ConferenceEntity {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
+    @Column(name = "total_participants")
+    private Integer totalParticipants;
+
     @Column(name = "participant_limit")
     private Integer participantLimit;
 
@@ -64,6 +67,7 @@ public class ConferenceEntity {
                 .startTime(startTime)
                 .endTime(endTime)
                 .participantLimit(participantLimit)
+                .totalParticipants(totalParticipants)
                 .userId(userId)
                 .sessions(sessions)
                 .build();
@@ -85,6 +89,7 @@ public class ConferenceEntity {
                 conference.getDescription(),
                 conference.getStartTime(),
                 conference.getEndTime(),
+                conference.getTotalParticipants(),
                 conference.getParticipantLimit(),
                 conference.getUserId(),
                 sessions

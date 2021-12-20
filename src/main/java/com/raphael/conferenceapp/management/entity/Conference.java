@@ -15,6 +15,7 @@ public class Conference {
     String description;
     LocalDateTime startTime;
     LocalDateTime endTime;
+    Integer totalParticipants;
     Integer participantLimit;
     Long userId;
     Collection<Session> sessions;

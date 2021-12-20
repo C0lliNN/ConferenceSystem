@@ -25,6 +25,7 @@ class ConferenceResponseTest {
                     conference.getDescription(),
                     conference.getStartTime(),
                     conference.getEndTime(),
+                    conference.getTotalParticipants(),
                     conference.getParticipantLimit(),
                     conference.getUserId(),
                     conference.getSessions().stream().map(SessionResponse::fromDomain).toList()

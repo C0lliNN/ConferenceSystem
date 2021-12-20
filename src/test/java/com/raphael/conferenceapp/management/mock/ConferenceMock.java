@@ -21,6 +21,7 @@ public class ConferenceMock {
                 LocalDateTime.of(2021, Month.NOVEMBER, 20, 15, 50),
                 LocalDateTime.of(2021, Month.NOVEMBER, 27, 15, 50),
                 FAKER.random().nextInt(0, 100),
+                FAKER.random().nextInt(0, 100),
                 FAKER.random().nextLong(100),
                 Collections.emptyList()
         );
@@ -33,6 +34,7 @@ public class ConferenceMock {
                 .description(FAKER.lorem().sentence())
                 .startTime(LocalDateTime.of(2021, Month.NOVEMBER, 20, 15, 50))
                 .endTime(LocalDateTime.of(2021, Month.NOVEMBER, 27, 15, 50))
+                .totalParticipants(FAKER.random().nextInt(0, 100))
                 .participantLimit(FAKER.random().nextInt(0, 100))
                 .userId(FAKER.random().nextLong(100))
                 .sessions(Collections.emptyList())

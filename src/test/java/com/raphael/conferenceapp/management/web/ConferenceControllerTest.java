@@ -136,6 +136,7 @@ class ConferenceControllerTest {
                     .andExpect(jsonPath("$.results[0].description").value(conference1.getDescription()))
                     .andExpect(jsonPath("$.results[0].startTime").value(conference1.getStartTime().format(DateTimeFormatter.ISO_DATE_TIME)))
                     .andExpect(jsonPath("$.results[0].endTime").value(conference1.getEndTime().format(DateTimeFormatter.ISO_DATE_TIME)))
+                    .andExpect(jsonPath("$.results[0].totalParticipants").value(conference1.getTotalParticipants()))
                     .andExpect(jsonPath("$.results[0].participantLimit").value(conference1.getParticipantLimit()))
                     .andExpect(jsonPath("$.results[0].userId").value(conference1.getUserId()))
                     .andExpect(jsonPath("$.results[1].id").value(conference2.getId()))
@@ -143,6 +144,7 @@ class ConferenceControllerTest {
                     .andExpect(jsonPath("$.results[1].description").value(conference2.getDescription()))
                     .andExpect(jsonPath("$.results[1].startTime").value(conference2.getStartTime().format(DateTimeFormatter.ISO_DATE_TIME)))
                     .andExpect(jsonPath("$.results[1].endTime").value(conference2.getEndTime().format(DateTimeFormatter.ISO_DATE_TIME)))
+                    .andExpect(jsonPath("$.results[1].totalParticipants").value(conference2.getTotalParticipants()))
                     .andExpect(jsonPath("$.results[1].participantLimit").value(conference2.getParticipantLimit()))
                     .andExpect(jsonPath("$.results[1].userId").value(conference2.getUserId()))
                     .andExpect(jsonPath("$.results[2].id").value(conference3.getId()))
@@ -150,6 +152,7 @@ class ConferenceControllerTest {
                     .andExpect(jsonPath("$.results[2].description").value(conference3.getDescription()))
                     .andExpect(jsonPath("$.results[2].startTime").value(conference3.getStartTime().format(DateTimeFormatter.ISO_DATE_TIME)))
                     .andExpect(jsonPath("$.results[2].endTime").value(conference3.getEndTime().format(DateTimeFormatter.ISO_DATE_TIME)))
+                    .andExpect(jsonPath("$.results[2].totalParticipants").value(conference3.getTotalParticipants()))
                     .andExpect(jsonPath("$.results[2].participantLimit").value(conference3.getParticipantLimit()))
                     .andExpect(jsonPath("$.results[2].userId").value(conference3.getUserId()))
                     .andExpect(jsonPath("$.results[2].sessions").isEmpty());
@@ -173,6 +176,7 @@ class ConferenceControllerTest {
                     .andExpect(jsonPath("$.results[0].description").value(conference2.getDescription()))
                     .andExpect(jsonPath("$.results[0].startTime").value(conference2.getStartTime().format(DateTimeFormatter.ISO_DATE_TIME)))
                     .andExpect(jsonPath("$.results[0].endTime").value(conference2.getEndTime().format(DateTimeFormatter.ISO_DATE_TIME)))
+                    .andExpect(jsonPath("$.results[0].totalParticipants").value(conference2.getTotalParticipants()))
                     .andExpect(jsonPath("$.results[0].participantLimit").value(conference2.getParticipantLimit()))
                     .andExpect(jsonPath("$.results[0].userId").value(conference2.getUserId()));
         }
@@ -195,6 +199,7 @@ class ConferenceControllerTest {
                     .andExpect(jsonPath("$.results[0].description").value(conference1.getDescription()))
                     .andExpect(jsonPath("$.results[0].startTime").value(conference1.getStartTime().format(DateTimeFormatter.ISO_DATE_TIME)))
                     .andExpect(jsonPath("$.results[0].endTime").value(conference1.getEndTime().format(DateTimeFormatter.ISO_DATE_TIME)))
+                    .andExpect(jsonPath("$.results[0].totalParticipants").value(conference1.getTotalParticipants()))
                     .andExpect(jsonPath("$.results[0].participantLimit").value(conference1.getParticipantLimit()))
                     .andExpect(jsonPath("$.results[0].userId").value(conference1.getUserId()));
         }
@@ -218,6 +223,7 @@ class ConferenceControllerTest {
                     .andExpect(jsonPath("$.results[0].startTime").value(conference2.getStartTime().format(DateTimeFormatter.ISO_DATE_TIME)))
                     .andExpect(jsonPath("$.results[0].endTime").value(conference2.getEndTime().format(DateTimeFormatter.ISO_DATE_TIME)))
                     .andExpect(jsonPath("$.results[0].participantLimit").value(conference2.getParticipantLimit()))
+                    .andExpect(jsonPath("$.results[0].totalParticipants").value(conference2.getTotalParticipants()))
                     .andExpect(jsonPath("$.results[0].userId").value(conference2.getUserId()));
         }
     }
@@ -265,6 +271,7 @@ class ConferenceControllerTest {
                     .andExpect(jsonPath("$.startTime").value(conference.getStartTime().format(DateTimeFormatter.ISO_DATE_TIME)))
                     .andExpect(jsonPath("$.endTime").value(conference.getEndTime().format(DateTimeFormatter.ISO_DATE_TIME)))
                     .andExpect(jsonPath("$.participantLimit").value(conference.getParticipantLimit()))
+                    .andExpect(jsonPath("$.totalParticipants").value(conference.getTotalParticipants()))
                     .andExpect(jsonPath("$.userId").value(conference.getUserId()));
         }
     }
@@ -389,6 +396,7 @@ class ConferenceControllerTest {
                     .andExpect(jsonPath("$.startTime").value(createConference.startTime().format(DateTimeFormatter.ISO_DATE_TIME)))
                     .andExpect(jsonPath("$.endTime").value(createConference.endTime().format(DateTimeFormatter.ISO_DATE_TIME)))
                     .andExpect(jsonPath("$.participantLimit").value(createConference.participantLimit()))
+                    .andExpect(jsonPath("$.totalParticipants").value(0))
                     .andExpect(jsonPath("$.userId").value(2L));
 
             PaginatedItems<Conference> paginatedConferences = conferenceRepository.findByQuery(new ConferenceQuery(null, null, null, null, 10L, 0L));
@@ -420,6 +428,7 @@ class ConferenceControllerTest {
                     .andExpect(jsonPath("$.startTime").value(createConference.startTime().format(DateTimeFormatter.ISO_DATE_TIME)))
                     .andExpect(jsonPath("$.endTime").value(createConference.endTime().format(DateTimeFormatter.ISO_DATE_TIME)))
                     .andExpect(jsonPath("$.participantLimit").isEmpty())
+                    .andExpect(jsonPath("$.totalParticipants").value(0))
                     .andExpect(jsonPath("$.userId").value(3L));
 
             PaginatedItems<Conference> paginatedConferences = conferenceRepository.findByQuery(new ConferenceQuery(null, null, null, null, 10L, 0L));

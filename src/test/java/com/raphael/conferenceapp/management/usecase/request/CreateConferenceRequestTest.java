@@ -26,6 +26,7 @@ class CreateConferenceRequestTest {
                     .startTime(request.startTime())
                     .endTime(request.endTime())
                     .participantLimit(request.participantLimit())
+                    .totalParticipants(0)
                     .userId(userId)
                     .build();
 

@@ -32,6 +32,7 @@ public record CreateConferenceRequest(
                 .startTime(startTime)
                 .endTime(endTime)
                 .participantLimit(participantLimit)
+                .totalParticipants(0)
                 .userId(userId)
                 .build();
     }
