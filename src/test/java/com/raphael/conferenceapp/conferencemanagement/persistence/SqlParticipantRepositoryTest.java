@@ -4,6 +4,7 @@ import com.raphael.conferenceapp.conferencemanagement.entity.PaginatedItems;
 import com.raphael.conferenceapp.conferencemanagement.entity.PaginationConstants;
 import com.raphael.conferenceapp.conferencemanagement.entity.Participant;
 import com.raphael.conferenceapp.conferencemanagement.entity.ParticipantQuery;
+import com.raphael.conferenceapp.conferencemanagement.exception.ParticipantAlreadyRegisteredException;
 import com.raphael.conferenceapp.conferencemanagement.mock.ParticipantMock;
 import com.raphael.conferenceapp.utils.config.DatabaseTestAutoConfiguration;
 import com.raphael.conferenceapp.utils.initializer.DatabaseContainerInitializer;
@@ -19,6 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Transactional
 @EnableAutoConfiguration
@@ -108,6 +110,37 @@ class SqlParticipantRepositoryTest {
             assertThat(paginatedParticipants.totalPages()).isEqualTo(3L);
             assertThat(paginatedParticipants.limit()).isEqualTo(1L);
             assertThat(paginatedParticipants.items()).containsExactly(participant2);
+        }
+    }
+
+    @Nested
+    @DisplayName("method: save(Participant)")
+    class SaveMethod {
+
+        @Test
+        @DisplayName("when called, then it should persist the participant")
+        void whenCalled_shouldPersistTheParticipant() {
+            Participant participant = ParticipantMock.newParticipantDomain();
+
+            Participant expected = participantRepository.save(participant);
+            Participant actual = jpaRepository.findById(expected.getId()).map(ParticipantEntity::toDomain).orElseThrow();
+
+            assertThat(actual).isEqualTo(expected);
+        }
+
+        @Test
+        @DisplayName("when called with duplicate email and conferenceId, then it should throw an error")
+        void whenCalledWithDuplicateEmailAndConferenceId_shouldThrowAnError() {
+            Participant existingParticipant = participantRepository.save(ParticipantMock.newParticipantDomain());
+
+            Participant newParticipant = ParticipantMock.newParticipantDomain()
+                    .toBuilder()
+                    .email(existingParticipant.getEmail())
+                    .conferenceId(existingParticipant.getConferenceId())
+                    .build();
+
+            assertThatThrownBy(() -> participantRepository.save(newParticipant))
+                    .isInstanceOf(ParticipantAlreadyRegisteredException.class);
         }
     }
 }

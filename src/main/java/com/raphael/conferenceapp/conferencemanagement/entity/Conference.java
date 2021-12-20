@@ -31,4 +31,8 @@ public class Conference {
     public boolean hasSessions() {
         return !getSessions().isEmpty();
     }
+
+    public boolean hasCapacity() {
+        return participantLimit == null || totalParticipants < participantLimit;
+    }
 }

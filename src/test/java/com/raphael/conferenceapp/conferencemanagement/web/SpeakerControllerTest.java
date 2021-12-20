@@ -74,18 +74,21 @@ class SpeakerControllerTest {
         void setUp() {
             this.speaker1 = SpeakerMock.newSpeakerDomain()
                     .toBuilder()
+                    .id(null)
                     .firstName("Annie")
                     .build();
             this.speaker1 = speakerRepository.save(speaker1);
 
             this.speaker2 = SpeakerMock.newSpeakerDomain()
                     .toBuilder()
+                    .id(null)
                     .firstName("Bob")
                     .build();
             this.speaker2 = speakerRepository.save(speaker2);
 
             this.speaker3 = SpeakerMock.newSpeakerDomain()
                     .toBuilder()
+                    .id(null)
                     .firstName("John")
                     .build();
             this.speaker3 = speakerRepository.save(speaker3);

@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.transaction.Transactional;
-import java.time.format.DateTimeFormatter;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -86,12 +85,12 @@ class ParticipantControllerTest {
                     .andExpect(jsonPath("$.results[0].id").value(participant1.getId()))
                     .andExpect(jsonPath("$.results[0].name").value(participant1.getName()))
                     .andExpect(jsonPath("$.results[0].email").value(participant1.getEmail()))
-                    .andExpect(jsonPath("$.results[0].subscribedAt").value(participant1.getSubscribedAt().format(DateTimeFormatter.ISO_DATE_TIME)))
+                    .andExpect(jsonPath("$.results[0].subscribedAt").value(participant1.getSubscribedAt().toString()))
                     .andExpect(jsonPath("$.results[0].conferenceId").value(participant1.getConferenceId()))
                     .andExpect(jsonPath("$.results[1].id").value(participant3.getId()))
                     .andExpect(jsonPath("$.results[1].name").value(participant3.getName()))
                     .andExpect(jsonPath("$.results[1].email").value(participant3.getEmail()))
-                    .andExpect(jsonPath("$.results[1].subscribedAt").value(participant3.getSubscribedAt().format(DateTimeFormatter.ISO_DATE_TIME)))
+                    .andExpect(jsonPath("$.results[1].subscribedAt").value(participant3.getSubscribedAt().toString()))
                     .andExpect(jsonPath("$.results[1].conferenceId").value(participant3.getConferenceId()));
         }
 
@@ -111,7 +110,7 @@ class ParticipantControllerTest {
                     .andExpect(jsonPath("$.results[0].id").value(participant1.getId()))
                     .andExpect(jsonPath("$.results[0].name").value(participant1.getName()))
                     .andExpect(jsonPath("$.results[0].email").value(participant1.getEmail()))
-                    .andExpect(jsonPath("$.results[0].subscribedAt").value(participant1.getSubscribedAt().format(DateTimeFormatter.ISO_DATE_TIME)))
+                    .andExpect(jsonPath("$.results[0].subscribedAt").value(participant1.getSubscribedAt().toString()))
                     .andExpect(jsonPath("$.results[0].conferenceId").value(participant1.getConferenceId()));
         }
 
@@ -131,7 +130,7 @@ class ParticipantControllerTest {
                     .andExpect(jsonPath("$.results[0].id").value(participant1.getId()))
                     .andExpect(jsonPath("$.results[0].name").value(participant1.getName()))
                     .andExpect(jsonPath("$.results[0].email").value(participant1.getEmail()))
-                    .andExpect(jsonPath("$.results[0].subscribedAt").value(participant1.getSubscribedAt().format(DateTimeFormatter.ISO_DATE_TIME)))
+                    .andExpect(jsonPath("$.results[0].subscribedAt").value(participant1.getSubscribedAt().toString()))
                     .andExpect(jsonPath("$.results[0].conferenceId").value(participant1.getConferenceId()));
         }
 
@@ -152,7 +151,7 @@ class ParticipantControllerTest {
                     .andExpect(jsonPath("$.results[0].id").value(participant3.getId()))
                     .andExpect(jsonPath("$.results[0].name").value(participant3.getName()))
                     .andExpect(jsonPath("$.results[0].email").value(participant3.getEmail()))
-                    .andExpect(jsonPath("$.results[0].subscribedAt").value(participant3.getSubscribedAt().format(DateTimeFormatter.ISO_DATE_TIME)))
+                    .andExpect(jsonPath("$.results[0].subscribedAt").value(participant3.getSubscribedAt().toString()))
                     .andExpect(jsonPath("$.results[0].conferenceId").value(participant3.getConferenceId()));
         }
     }

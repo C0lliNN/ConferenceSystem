@@ -13,7 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -31,7 +31,7 @@ public class ParticipantEntity {
     private String email;
 
     @Column(name = "subscribed_at")
-    private LocalDateTime subscribedAt;
+    private Instant subscribedAt;
 
     @Column(name = "conference_id")
     private Long conferenceId;

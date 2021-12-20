@@ -2,13 +2,13 @@ package com.raphael.conferenceapp.conferencemanagement.usecase.response;
 
 import com.raphael.conferenceapp.conferencemanagement.entity.Participant;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public record ParticipantResponse(
         Long id,
         String name,
         String email,
-        LocalDateTime subscribedAt,
+        Instant subscribedAt,
         Long conferenceId) {
 
     public static ParticipantResponse fromDomain(Participant participant) {

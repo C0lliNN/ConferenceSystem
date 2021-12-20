@@ -6,4 +6,5 @@ import com.raphael.conferenceapp.conferencemanagement.entity.ParticipantQuery;
 
 public interface ParticipantRepository {
     PaginatedItems<Participant> findByQuery(ParticipantQuery query);
+    Participant save(Participant participant);
 }

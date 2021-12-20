@@ -62,4 +62,41 @@ class ConferenceTest {
             assertThat(conference.hasSessions()).isTrue();
         }
     }
+
+    @DisplayName("method: hasCapacity()")
+    @Nested
+    class HasCapacityMethod {
+
+        @Test
+        @DisplayName("when participantLimit is null, then it should return true")
+        void whenParticipantLimitIsNull_shouldReturnTrue() {
+            Conference conference = new Conference(null, null, null, null, null, 10, null, null, null);
+
+            assertThat(conference.hasCapacity()).isTrue();
+        }
+
+        @Test
+        @DisplayName("when totalParticipants is less than participantLimit, then it should return true")
+        void whenTotalParticipantsIsLessThanParticipantLimit_shouldReturnTrue() {
+            Conference conference = new Conference(null, null, null, null, null, 10, 15, null, null);
+
+            assertThat(conference.hasCapacity()).isTrue();
+        }
+
+        @Test
+        @DisplayName("when totalParticipants is equal to participantLimit, then it should return false")
+        void whenTotalParticipantsIsEqualToParticipantLimit_shouldReturnFalse() {
+            Conference conference = new Conference(null, null, null, null, null, 15, 15, null, null);
+
+            assertThat(conference.hasCapacity()).isFalse();
+        }
+
+        @Test
+        @DisplayName("when totalParticipants is greater than participantLimit, then it should return false")
+        void whenTotalParticipantsIsGreaterThanToParticipantLimit_shouldReturnFalse() {
+            Conference conference = new Conference(null, null, null, null, null, 18, 15, null, null);
+
+            assertThat(conference.hasCapacity()).isFalse();
+        }
+    }
 }

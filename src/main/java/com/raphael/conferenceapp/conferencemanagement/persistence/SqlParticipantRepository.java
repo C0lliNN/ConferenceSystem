@@ -3,9 +3,11 @@ package com.raphael.conferenceapp.conferencemanagement.persistence;
 import com.raphael.conferenceapp.conferencemanagement.entity.PaginatedItems;
 import com.raphael.conferenceapp.conferencemanagement.entity.Participant;
 import com.raphael.conferenceapp.conferencemanagement.entity.ParticipantQuery;
+import com.raphael.conferenceapp.conferencemanagement.exception.ParticipantAlreadyRegisteredException;
 import com.raphael.conferenceapp.conferencemanagement.usecase.ParticipantRepository;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -53,5 +55,14 @@ public class SqlParticipantRepository implements ParticipantRepository {
                 page.getTotalElements(),
                 query.offset()
         );
+    }
+
+    @Override
+    public Participant save(final Participant participant) {
+        try {
+            return jpaRepository.save(ParticipantEntity.fromDomain(participant)).toDomain();
+        } catch (DataIntegrityViolationException e) {
+            throw new ParticipantAlreadyRegisteredException("The provided email is already registered in this conference");
+        }
     }
 }
