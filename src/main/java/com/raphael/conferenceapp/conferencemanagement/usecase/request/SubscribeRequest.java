@@ -11,7 +11,7 @@ public record SubscribeRequest(
         String name,
 
         @NotBlank(message = "the field is mandatory")
-        @Email(message = "the must contain a valid email")
+        @Email(message = "the field must contain a valid email")
         String email,
 
         Long conferenceId) {

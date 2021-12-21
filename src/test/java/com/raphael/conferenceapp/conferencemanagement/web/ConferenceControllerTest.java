@@ -1,13 +1,16 @@
 package com.raphael.conferenceapp.conferencemanagement.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.raphael.conferenceapp.auth.usecase.TokenGenerator;
 import com.raphael.conferenceapp.conferencemanagement.entity.Conference;
 import com.raphael.conferenceapp.conferencemanagement.entity.ConferenceQuery;
 import com.raphael.conferenceapp.conferencemanagement.entity.PaginatedItems;
+import com.raphael.conferenceapp.conferencemanagement.entity.Participant;
 import com.raphael.conferenceapp.conferencemanagement.entity.Session;
 import com.raphael.conferenceapp.conferencemanagement.mock.ConferenceMock;
+import com.raphael.conferenceapp.conferencemanagement.mock.ParticipantMock;
 import com.raphael.conferenceapp.conferencemanagement.mock.SessionMock;
+import com.raphael.conferenceapp.conferencemanagement.persistence.JpaParticipantRepository;
+import com.raphael.conferenceapp.conferencemanagement.persistence.ParticipantEntity;
 import com.raphael.conferenceapp.conferencemanagement.persistence.SqlConferenceRepository;
 import com.raphael.conferenceapp.conferencemanagement.persistence.SqlSessionRepository;
 import com.raphael.conferenceapp.conferencemanagement.persistence.SqlSpeakerRepository;
@@ -64,7 +67,7 @@ class ConferenceControllerTest {
     private SqlConferenceRepository conferenceRepository;
 
     @Autowired
-    private TokenGenerator tokenGenerator;
+    private JpaParticipantRepository jpaParticipantRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -225,6 +228,109 @@ class ConferenceControllerTest {
                     .andExpect(jsonPath("$.results[0].participantLimit").value(conference2.getParticipantLimit()))
                     .andExpect(jsonPath("$.results[0].totalParticipants").value(conference2.getTotalParticipants()))
                     .andExpect(jsonPath("$.results[0].userId").value(conference2.getUserId()));
+        }
+    }
+
+    @Nested
+    @DisplayName("method: getParticipantsForConferenceId(Long, SearchParticipantsRequest)")
+    class GetParticipantsForConferenceIdMethod {
+        private Participant participant1;
+        private Participant participant2;
+        private Participant participant3;
+
+        @BeforeEach
+        void setUp() {
+            this.participant1 = ParticipantMock.newParticipantDomain().toBuilder().conferenceId(1L).build();
+            this.participant1 = jpaParticipantRepository.save(ParticipantEntity.fromDomain(participant1)).toDomain();
+
+            this.participant2 = ParticipantMock.newParticipantDomain().toBuilder().conferenceId(2L).build();
+            this.participant2 = jpaParticipantRepository.save(ParticipantEntity.fromDomain(participant2)).toDomain();
+
+            this.participant3 = ParticipantMock.newParticipantDomain().toBuilder().conferenceId(1L).build();
+            this.participant3 = jpaParticipantRepository.save(ParticipantEntity.fromDomain(participant3)).toDomain();
+        }
+
+        @Test
+        @DisplayName("when called without query params, then it should return all the matching items")
+        void whenCalledWithoutQueryParams_shouldReturnAllTheMatchingItems() throws Exception {
+            mockMvc.perform(get(ENDPOINT + "/conferences/{id}/participants", 1L))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.currentPage").value(1L))
+                    .andExpect(jsonPath("$.totalPages").value(1L))
+                    .andExpect(jsonPath("$.totalItems").value(2L))
+                    .andExpect(jsonPath("$.perPage").value(10L))
+                    .andExpect(jsonPath("$.results[0].id").value(participant1.getId()))
+                    .andExpect(jsonPath("$.results[0].name").value(participant1.getName()))
+                    .andExpect(jsonPath("$.results[0].email").value(participant1.getEmail()))
+                    .andExpect(jsonPath("$.results[0].subscribedAt").value(participant1.getSubscribedAt().toString()))
+                    .andExpect(jsonPath("$.results[0].conferenceId").value(participant1.getConferenceId()))
+                    .andExpect(jsonPath("$.results[1].id").value(participant3.getId()))
+                    .andExpect(jsonPath("$.results[1].name").value(participant3.getName()))
+                    .andExpect(jsonPath("$.results[1].email").value(participant3.getEmail()))
+                    .andExpect(jsonPath("$.results[1].subscribedAt").value(participant3.getSubscribedAt().toString()))
+                    .andExpect(jsonPath("$.results[1].conferenceId").value(participant3.getConferenceId()));
+        }
+
+        @Test
+        @DisplayName("when called with title query param, then it should return all the matching items")
+        void whenCalledWithTitleQueryParam_shouldReturnAllTheMatchingItems() throws Exception {
+            MockHttpServletRequestBuilder request = get(ENDPOINT + "/conferences/{id}/participants", 1L)
+                    .queryParam("name", participant1.getName());
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.currentPage").value(1L))
+                    .andExpect(jsonPath("$.totalPages").value(1L))
+                    .andExpect(jsonPath("$.totalItems").value(1L))
+                    .andExpect(jsonPath("$.perPage").value(10L))
+                    .andExpect(jsonPath("$.results[0].id").value(participant1.getId()))
+                    .andExpect(jsonPath("$.results[0].name").value(participant1.getName()))
+                    .andExpect(jsonPath("$.results[0].email").value(participant1.getEmail()))
+                    .andExpect(jsonPath("$.results[0].subscribedAt").value(participant1.getSubscribedAt().toString()))
+                    .andExpect(jsonPath("$.results[0].conferenceId").value(participant1.getConferenceId()));
+        }
+
+        @Test
+        @DisplayName("when called with email query param, then it should return all the matching items")
+        void whenCalledWithEmailQueryParam_shouldReturnAllTheMatchingItems() throws Exception {
+            MockHttpServletRequestBuilder request = get(ENDPOINT + "/conferences/{id}/participants", 1L)
+                    .queryParam("email", participant1.getEmail());
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.currentPage").value(1L))
+                    .andExpect(jsonPath("$.totalPages").value(1L))
+                    .andExpect(jsonPath("$.totalItems").value(1L))
+                    .andExpect(jsonPath("$.perPage").value(10L))
+                    .andExpect(jsonPath("$.results[0].id").value(participant1.getId()))
+                    .andExpect(jsonPath("$.results[0].name").value(participant1.getName()))
+                    .andExpect(jsonPath("$.results[0].email").value(participant1.getEmail()))
+                    .andExpect(jsonPath("$.results[0].subscribedAt").value(participant1.getSubscribedAt().toString()))
+                    .andExpect(jsonPath("$.results[0].conferenceId").value(participant1.getConferenceId()));
+        }
+
+        @Test
+        @DisplayName("when called with page and perPage query param, then it should return all the matching items")
+        void whenCalledWithPageAndPerPageQueryParam_shouldReturnAllTheMatchingItems() throws Exception {
+            MockHttpServletRequestBuilder request = get(ENDPOINT + "/conferences/{id}/participants", 1L)
+                    .queryParam("page", "2")
+                    .queryParam("perPage", "1");
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.currentPage").value(2L))
+                    .andExpect(jsonPath("$.totalPages").value(2L))
+                    .andExpect(jsonPath("$.totalItems").value(2L))
+                    .andExpect(jsonPath("$.perPage").value(1L))
+                    .andExpect(jsonPath("$.results[0].id").value(participant3.getId()))
+                    .andExpect(jsonPath("$.results[0].name").value(participant3.getName()))
+                    .andExpect(jsonPath("$.results[0].email").value(participant3.getEmail()))
+                    .andExpect(jsonPath("$.results[0].subscribedAt").value(participant3.getSubscribedAt().toString()))
+                    .andExpect(jsonPath("$.results[0].conferenceId").value(participant3.getConferenceId()));
         }
     }
 

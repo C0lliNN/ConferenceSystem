@@ -2,11 +2,14 @@ package com.raphael.conferenceapp.conferencemanagement.web;
 
 import com.raphael.conferenceapp.auth.entity.User;
 import com.raphael.conferenceapp.conferencemanagement.usecase.ConferenceUseCase;
+import com.raphael.conferenceapp.conferencemanagement.usecase.ParticipantUseCase;
 import com.raphael.conferenceapp.conferencemanagement.usecase.request.CreateConferenceRequest;
 import com.raphael.conferenceapp.conferencemanagement.usecase.request.SearchConferencesRequest;
+import com.raphael.conferenceapp.conferencemanagement.usecase.request.SearchParticipantsRequest;
 import com.raphael.conferenceapp.conferencemanagement.usecase.request.UpdateConferenceRequest;
 import com.raphael.conferenceapp.conferencemanagement.usecase.response.ConferenceResponse;
 import com.raphael.conferenceapp.conferencemanagement.usecase.response.PaginatedItemsResponse;
+import com.raphael.conferenceapp.conferencemanagement.usecase.response.ParticipantResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,10 +32,17 @@ import javax.validation.Valid;
 @Tag(name = "Conference")
 public class ConferenceController {
     private final ConferenceUseCase conferenceUseCase;
+    private final ParticipantUseCase participantUseCase;
 
     @GetMapping("/conferences")
     public PaginatedItemsResponse<ConferenceResponse> getConferences(SearchConferencesRequest request) {
         return conferenceUseCase.getConferences(request);
+    }
+
+    @GetMapping("/conferences/{id}/participants")
+    public PaginatedItemsResponse<ParticipantResponse> getParticipantsForConferenceId(@PathVariable("id") Long conferenceId,
+                                                                                      SearchParticipantsRequest request) {
+        return participantUseCase.getParticipants(request.withConferenceId(conferenceId));
     }
 
     @GetMapping("/conferences/{conferenceId}")
