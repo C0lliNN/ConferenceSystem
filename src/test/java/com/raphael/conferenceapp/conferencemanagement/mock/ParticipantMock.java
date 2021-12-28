@@ -5,6 +5,7 @@ import com.raphael.conferenceapp.conferencemanagement.entity.Participant;
 import com.raphael.conferenceapp.conferencemanagement.persistence.ParticipantEntity;
 import com.raphael.conferenceapp.conferencemanagement.usecase.request.SearchParticipantsRequest;
 import com.raphael.conferenceapp.conferencemanagement.usecase.request.SubscribeRequest;
+import com.raphael.conferenceapp.conferencemanagement.usecase.response.ParticipantResponse;
 
 import java.util.concurrent.TimeUnit;
 
@@ -45,6 +46,16 @@ public class ParticipantMock {
         return new SubscribeRequest(
                 FAKER.name().name(),
                 FAKER.internet().emailAddress(),
+                FAKER.random().nextLong(100L)
+        );
+    }
+
+    public static ParticipantResponse newResponse() {
+        return new ParticipantResponse(
+                FAKER.random().nextLong(1000L),
+                FAKER.name().name(),
+                FAKER.internet().emailAddress(),
+                FAKER.date().future(20, TimeUnit.DAYS).toInstant(),
                 FAKER.random().nextLong(100L)
         );
     }

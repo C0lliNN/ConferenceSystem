@@ -5,6 +5,7 @@ import com.raphael.conferenceapp.conferencemanagement.entity.Conference;
 import com.raphael.conferenceapp.conferencemanagement.persistence.ConferenceEntity;
 import com.raphael.conferenceapp.conferencemanagement.usecase.request.CreateConferenceRequest;
 import com.raphael.conferenceapp.conferencemanagement.usecase.request.SearchConferencesRequest;
+import com.raphael.conferenceapp.conferencemanagement.usecase.response.ConferenceResponse;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -59,6 +60,20 @@ public class ConferenceMock {
                 FAKER.random().nextLong(100) + 1,
                 FAKER.random().nextLong(100) + 1,
                 FAKER.random().nextLong(100) + 1
+        );
+    }
+
+    public static ConferenceResponse newConferenceResponse() {
+        return new ConferenceResponse(
+                FAKER.random().nextLong(1000L),
+                FAKER.company().name(),
+                FAKER.lorem().sentence(),
+                LocalDateTime.of(2021, Month.NOVEMBER, 20, 15, 50),
+                LocalDateTime.of(2021, Month.NOVEMBER, 27, 15, 50),
+                FAKER.random().nextInt(0, 100),
+                FAKER.random().nextInt(0, 100),
+                FAKER.random().nextLong(100),
+                Collections.emptyList()
         );
     }
 }

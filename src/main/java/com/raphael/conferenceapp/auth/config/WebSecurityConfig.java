@@ -21,7 +21,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(filterChainExceptionHandler, LogoutFilter.class)
                 .addFilterAfter(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/v3/api-docs/**", "/docs/**", "/swagger-ui/**", "/auth/**").permitAll()
+                .antMatchers("/v3/api-docs/**", "/docs/**", "/swagger-ui/**", "/auth/**", "/participant/**").permitAll()
                 .anyRequest().authenticated();
     }
 }

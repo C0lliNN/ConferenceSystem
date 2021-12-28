@@ -11,6 +11,9 @@ spring:
     password: postgres
   jpa:
     show-sql: true
+  mail:
+    host: localhost
+    port: 1025
 
 jwt:
   secret: random-jwt-secret
