@@ -77,18 +77,21 @@ class ParticipantControllerTest {
         void setUp() {
             this.conference1 = ConferenceMock.newConferenceDomain()
                     .toBuilder()
+                    .id(null)
                     .startTime(LocalDateTime.of(2021, Month.NOVEMBER, 22, 15, 50))
                     .build();
             this.conference1 = conferenceRepository.save(conference1);
 
             this.conference2 = ConferenceMock.newConferenceDomain()
                     .toBuilder()
+                    .id(null)
                     .startTime(LocalDateTime.of(2021, Month.NOVEMBER, 21, 15, 50))
                     .build();
             this.conference2 = conferenceRepository.save(conference2);
 
             this.conference3 = ConferenceMock.newConferenceDomain()
                     .toBuilder()
+                    .id(null)
                     .startTime(LocalDateTime.of(2021, Month.NOVEMBER, 20, 15, 50))
                     .build();
             this.conference3 = conferenceRepository.save(conference3);

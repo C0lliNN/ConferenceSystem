@@ -20,6 +20,7 @@ import com.raphael.conferenceapp.conferencemanagement.persistence.SqlSpeakerRepo
 import com.raphael.conferenceapp.conferencemanagement.usecase.request.CreateConferenceRequest;
 import com.raphael.conferenceapp.conferencemanagement.usecase.request.CreateSessionRequest;
 import com.raphael.conferenceapp.conferencemanagement.usecase.request.CreateSpeakerRequest;
+import com.raphael.conferenceapp.conferencemanagement.usecase.request.UpdateConferenceRequest;
 import com.raphael.conferenceapp.conferencemanagement.usecase.request.UpdateSessionRequest;
 import com.raphael.conferenceapp.conferencemanagement.usecase.request.UpdateSpeakerRequest;
 import com.raphael.conferenceapp.utils.initializer.DatabaseContainerInitializer;
@@ -556,6 +557,116 @@ class AdminControllerTest {
         }
     }
 
+    @Nested
+    @DisplayName("method: updateConference(Long, UpdateConferenceRequest)")
+    class UpdateConferenceMethod {
+        private Conference conference;
+
+        @BeforeEach
+        void setUp() {
+            this.conference = conferenceRepository.save(ConferenceMock.newConferenceDomain());
+        }
+
+        @Test
+        @DisplayName("when called with invalid data, then it should return 400")
+        void whenCalledWithInvalidDate_shouldReturn400() throws Exception {
+            UpdateConferenceRequest updateConference = new UpdateConferenceRequest(
+                    null,
+                    null,
+                    null,
+                    null,
+                    -4
+            );
+
+            MockHttpServletRequestBuilder request = patch(ENDPOINT + "/conferences/{id}", conference.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsBytes(updateConference));
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").value("The given payload is invalid. Check the 'details' field."))
+                    .andExpect(jsonPath("$.details[0].field").value("participantLimit"))
+                    .andExpect(jsonPath("$.details[0].message").value("the field must contain values greater or equal to 1"));
+        }
+
+        @Test
+        @DisplayName("when called with unknown id, then it should return 404")
+        void whenCalledWithUnknownId_shouldReturn404() throws Exception {
+            UpdateConferenceRequest updateConference = new UpdateConferenceRequest(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            MockHttpServletRequestBuilder request = patch(ENDPOINT + "/conferences/{id}", 100L)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsBytes(updateConference));
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.message").value("Conference with ID 100 was not found."))
+                    .andExpect(jsonPath("$.details").isEmpty());
+        }
+
+        @Test
+        @DisplayName("when called with valid data, then it should update the conference")
+        void whenCalledWithValidData_shouldUpdateTheConference() throws Exception {
+            UpdateConferenceRequest updateConference = new UpdateConferenceRequest(
+                    "new title",
+                    null,
+                    null,
+                    null,
+                    4
+            );
+
+            MockHttpServletRequestBuilder request = patch(ENDPOINT + "/conferences/{id}", conference.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsBytes(updateConference));
+
+            mockMvc.perform(request)
+                    .andDo(print())
+                    .andExpect(status().isOk());
+
+            Conference persistedConference = conferenceRepository.findById(conference.getId()).orElseThrow();
+            assertThat(persistedConference.getTitle()).isEqualTo("new title");
+            assertThat(persistedConference.getParticipantLimit()).isEqualTo(4);
+        }
+    }
+
+    @Nested
+    @DisplayName("method: deleteConference(Long)")
+    class DeleteConferenceMethod {
+        private Conference conference;
+
+        @BeforeEach
+        void setUp() {
+            this.conference = conferenceRepository.save(ConferenceMock.newConferenceDomain());
+        }
+
+        @Test
+        @DisplayName("when called with unknown id, then it should return 404 error")
+        void whenCalledWithUnknownId_shouldReturn404Error() throws Exception {
+            mockMvc.perform(delete(ENDPOINT + "/conferences/{id}", 100L))
+                    .andDo(print())
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.message").value("Conference with ID 100 was not found."))
+                    .andExpect(jsonPath("$.details").isEmpty());
+        }
+
+        @Test
+        @DisplayName("when called with existing id, then it should delete the conference")
+        void whenCalledWithExistingId_shouldDeleteTheConference() throws Exception {
+            mockMvc.perform(delete(ENDPOINT + "/conferences/{id}", conference.getId()))
+                    .andDo(print())
+                    .andExpect(status().isOk());
+
+            assertThat(conferenceRepository.findById(conference.getId())).isEmpty();
+        }
+    }
 
     @Nested
     @DisplayName("method: getSessions(Long)")

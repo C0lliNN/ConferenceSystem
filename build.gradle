@@ -63,11 +63,35 @@ test {
     finalizedBy jacocoTestReport
 }
 
+jacocoTestReport {
+    dependsOn test
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "com/raphael/conferenceapp/auth/web/filter/**",
+                    "com/raphael/conferenceapp/notifier/client/**",
+                    "**/web/exception/**"
+            ])
+        }))
+    }
+}
+
 jacocoTestCoverageVerification {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "com/raphael/conferenceapp/auth/web/filter/**",
+                    "com/raphael/conferenceapp/notifier/client/**",
+                    "**/web/exception/**"
+            ])
+        }))
+    }
+
     violationRules {
         rule {
             limit {
-                minimum = 0.5
+                minimum = 0.95
             }
         }
 
